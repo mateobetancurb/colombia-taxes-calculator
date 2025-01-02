@@ -37,9 +37,13 @@ function App() {
 						Calculadora de impuestos para Colombianos 🇨🇴
 					</h1>
 				</div>
+				<h2 className="mb-5">
+					¿No sabes cómo calcular tus impuestos? No te preocupes, esta
+					herramienta lo hace todo por ti
+				</h2>
 				<form action="">
 					<label className="block mb-3 font-bold" htmlFor="tax">
-						Tipo de impuesto a calcular
+						Elige el tipo de impuesto a calcular
 					</label>
 					<select
 						id="tax"
