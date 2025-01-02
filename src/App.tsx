@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Summary } from "./components/Summary";
 
 function App() {
 	const [displayValue, setDisplayValue] = useState<string>("");
-	const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
 	const [optionSelected, setOptionSelected] = useState<string>("");
 
 	const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,17 +17,8 @@ function App() {
 			: "";
 		setDisplayValue(formattedValue);
 	};
-	console.log(optionSelected);
 
-	useEffect(() => {
-		// const rawValue = displayValue.replace(/[^\d]/g, "");
-		// setIsButtonDisabled(rawValue === "" ? true : false);
-		if (!displayValue && optionSelected !== "-- Selecciona --") {
-			return setIsButtonDisabled(true);
-		} else {
-			return setIsButtonDisabled(false);
-		}
-	}, [displayValue]);
+	const isButtonDisabled = !displayValue || !optionSelected.trim();
 
 	const calculateTaxes = () => {
 		console.log(optionSelected);
