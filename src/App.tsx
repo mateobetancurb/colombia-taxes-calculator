@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Summary } from "./components/Summary";
 
 function App() {
 	const [displayValue, setDisplayValue] = useState("");
@@ -16,9 +17,11 @@ function App() {
 		setDisplayValue(formattedValue);
 	};
 
+	// const calculateTaxes = () => {};
+
 	return (
 		<main className="bg-[#e0fff1] h-screen py-10">
-			<div className="w-[90%] px-5 md:w-2/3 mx-auto bg-white rounded-lg shadow-lg">
+			<div className="w-[90%] p-5 md:w-2/3 mx-auto bg-white rounded-lg shadow-lg">
 				<div className="flex items-center gap-3 justify-center py-5 mb-5">
 					<svg
 						fill="none"
@@ -68,7 +71,11 @@ function App() {
 						placeholder="$ 0"
 						className="mb-5 w-full p-2 border border-gray-300 rounded-lg"
 					/>
+					<button className="bg-green-700 text-white font-bold w-full p-2 rounded-lg hover:bg-green-100 hover:text-green-700 transition-all">
+						Calcular
+					</button>
 				</form>
+				<Summary result={displayValue} />
 			</div>
 		</main>
 	);
