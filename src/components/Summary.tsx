@@ -1,5 +1,5 @@
 interface SummaryProps {
-	result: number | string;
+	result: number | string | undefined;
 }
 
 function Summary({ result }: SummaryProps) {
