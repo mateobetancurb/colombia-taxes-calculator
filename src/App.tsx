@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Summary } from "./components/Summary";
 
 function App() {
-	const [displayValue, setDisplayValue] = useState("");
+	const [displayValue, setDisplayValue] = useState<string>("");
+	const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
+	const [optionSelected, setOptionSelected] = useState<string>("");
 
 	const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const rawValue = e.target.value.replace(/[^\d]/g, "");
@@ -16,8 +18,21 @@ function App() {
 			: "";
 		setDisplayValue(formattedValue);
 	};
+	console.log(optionSelected);
 
-	// const calculateTaxes = () => {};
+	useEffect(() => {
+		// const rawValue = displayValue.replace(/[^\d]/g, "");
+		// setIsButtonDisabled(rawValue === "" ? true : false);
+		if (!displayValue && optionSelected !== "-- Selecciona --") {
+			return setIsButtonDisabled(true);
+		} else {
+			return setIsButtonDisabled(false);
+		}
+	}, [displayValue]);
+
+	const calculateTaxes = () => {
+		console.log(optionSelected);
+	};
 
 	return (
 		<main className="bg-[#e0fff1] h-screen py-10">
@@ -51,12 +66,15 @@ function App() {
 					<select
 						id="tax"
 						className="mb-5 w-full p-2 border border-gray-300 rounded-lg"
-						defaultValue={"-- Selecciona --"}
+						value={optionSelected}
+						onChange={(e) => setOptionSelected(e.target.value)}
 					>
-						<option disabled>-- Selecciona --</option>
-						<option value="">4x1000</option>
-						<option value="">Retención en la fuente</option>
-						<option value="">IVA</option>
+						<option value="" disabled>
+							-- Selecciona --
+						</option>
+						<option value="1">4x1000</option>
+						<option value="2">Retención en la fuente</option>
+						<option value="3">IVA</option>
 						<option disabled>Próximamente se agregarán nuevos impuestos</option>
 					</select>
 					<label className="block mb-3 font-bold" htmlFor="value">
@@ -71,7 +89,16 @@ function App() {
 						placeholder="$ 0"
 						className="mb-5 w-full p-2 border border-gray-300 rounded-lg"
 					/>
-					<button className="bg-green-700 text-white font-bold w-full p-2 rounded-lg hover:bg-green-100 hover:text-green-700 transition-all">
+					<button
+						onClick={calculateTaxes}
+						type="button"
+						disabled={isButtonDisabled}
+						className={
+							isButtonDisabled
+								? "bg-gray-300 text-white w-full p-2 rounded-lg"
+								: "bg-green-700 text-white font-bold w-full p-2 rounded-lg hover:bg-green-100 hover:text-green-700 transition-all"
+						}
+					>
 						Calcular
 					</button>
 				</form>
