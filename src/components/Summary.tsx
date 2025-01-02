@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { currencyFormat } from "../helpers";
 
 interface SummaryProps {
@@ -17,6 +17,11 @@ function Summary({ result }: SummaryProps) {
 			console.error(error);
 		}
 	}
+
+	useEffect(() => {
+		setIsValueCopied(false);
+	}, [result]);
+
 	return (
 		<section className="bg-[#e0fff1] rounded-lg p-5">
 			<h2 className="font-bold text-lg text-center mb-3">Impuesto a pagar</h2>
