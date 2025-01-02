@@ -23,7 +23,7 @@ function Summary({ result }: SummaryProps) {
 	}, [result]);
 
 	return (
-		<section className="bg-[#e0fff1] rounded-lg p-5">
+		<section className="bg-[#e0fff1] rounded-lg p-5 mb-5">
 			<h2 className="font-bold text-lg text-center mb-3">Impuesto a pagar</h2>
 			<p className="text-center">{currencyFormat(result)}</p>
 			<button
