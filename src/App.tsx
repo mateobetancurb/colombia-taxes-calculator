@@ -37,6 +37,12 @@ function App() {
 		}
 	};
 
+	const cleanAllValues = () => {
+		setDisplayValue("");
+		setOptionSelected("");
+		setTaxesToPay(0);
+	};
+
 	return (
 		<main className="bg-[#e0fff1] h-screen py-10">
 			<div className="w-[90%] p-5 md:w-2/3 mx-auto bg-white rounded-lg shadow-lg">
@@ -105,6 +111,15 @@ function App() {
 					</button>
 				</form>
 				{taxesToPay > 1 ? <Summary result={taxesToPay} /> : null}
+				{taxesToPay > 1 ? (
+					<button
+						type="button"
+						onClick={cleanAllValues}
+						className="bg-red-400 w-full text-white rounded-lg p-2 mb-8"
+					>
+						Borrar todo
+					</button>
+				) : null}
 			</div>
 		</main>
 	);
