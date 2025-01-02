@@ -3,7 +3,7 @@ import { useState } from "react";
 function App() {
 	const [displayValue, setDisplayValue] = useState("");
 
-	const handleValueChange = (e) => {
+	const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const rawValue = e.target.value.replace(/[^\d]/g, "");
 		const formattedValue = rawValue
 			? new Intl.NumberFormat("es-CO", {
@@ -11,9 +11,8 @@ function App() {
 					currency: "COP",
 					minimumFractionDigits: 0,
 					maximumFractionDigits: 0,
-			  }).format(rawValue)
+			  }).format(Number(rawValue))
 			: "";
-
 		setDisplayValue(formattedValue);
 	};
 
@@ -45,16 +44,13 @@ function App() {
 					<select
 						id="tax"
 						className="mb-5 w-full p-2 border border-gray-300 rounded-lg"
+						defaultValue={"-- Selecciona --"}
 					>
-						<option selected disabled>
-							-- Selecciona --
-						</option>
+						<option disabled>-- Selecciona --</option>
 						<option value="">4x1000</option>
 						<option value="">Retención en la fuente</option>
 						<option value="">IVA</option>
-						<option disabled value="">
-							Próximamente se agregarán nuevos impuestos
-						</option>
+						<option disabled>Próximamente se agregarán nuevos impuestos</option>
 					</select>
 					<label className="block mb-3 font-bold" htmlFor="value">
 						Valor a calcular
