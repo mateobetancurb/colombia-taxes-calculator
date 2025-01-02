@@ -4,6 +4,8 @@ import { Summary } from "./components/Summary";
 function App() {
 	const [displayValue, setDisplayValue] = useState<string>("");
 	const [optionSelected, setOptionSelected] = useState<string>("");
+	const [valueToCalculate, setValueToCalculate] = useState<number>();
+	const [taxesToPay, setTaxesToPay] = useState<number>();
 
 	const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const rawValue = e.target.value.replace(/[^\d]/g, "");
@@ -16,12 +18,18 @@ function App() {
 			  }).format(Number(rawValue))
 			: "";
 		setDisplayValue(formattedValue);
+		setValueToCalculate(Number(rawValue));
 	};
 
 	const isButtonDisabled = !displayValue || !optionSelected.trim();
 
 	const calculateTaxes = () => {
-		console.log(optionSelected);
+		switch (optionSelected) {
+			case "1":
+				return setTaxesToPay((valueToCalculate * 4) / 1000);
+			case "2":
+				return setTaxesToPay((valueToCalculate * 19) / 100);
+		}
 	};
 
 	return (
@@ -63,8 +71,7 @@ function App() {
 							-- Selecciona --
 						</option>
 						<option value="1">4x1000</option>
-						<option value="2">Retención en la fuente</option>
-						<option value="3">IVA</option>
+						<option value="2">IVA</option>
 						<option disabled>Próximamente se agregarán nuevos impuestos</option>
 					</select>
 					<label className="block mb-3 font-bold" htmlFor="value">
@@ -92,7 +99,7 @@ function App() {
 						Calcular
 					</button>
 				</form>
-				<Summary result={displayValue} />
+				<Summary result={taxesToPay} />
 			</div>
 		</main>
 	);
