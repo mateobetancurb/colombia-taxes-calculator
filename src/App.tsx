@@ -115,7 +115,7 @@ function App() {
 					<button
 						type="button"
 						onClick={cleanAllValues}
-						className="bg-red-400 w-full text-white rounded-lg p-2 mb-8"
+						className="bg-red-400 w-full text-white rounded-lg p-2 mb-8 font-bold"
 					>
 						Borrar todo
 					</button>
