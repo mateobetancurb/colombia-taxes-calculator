@@ -68,7 +68,7 @@ function App() {
 					¿No sabes cómo calcular tus impuestos? No te preocupes, esta
 					herramienta lo hace todo por ti
 				</h2>
-				<div className="md:flex md:gap-5">
+				<div className="md:flex md:gap-5 md:items-center">
 					<form onSubmit={calculateTaxes} className="w-full">
 						<label className="block mb-3 font-bold" htmlFor="tax">
 							Elige el tipo de impuesto a calcular
