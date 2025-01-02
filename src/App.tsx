@@ -97,8 +97,8 @@ function App() {
 						disabled={isButtonDisabled}
 						className={
 							isButtonDisabled
-								? "bg-gray-300 text-white w-full p-2 rounded-lg"
-								: "bg-green-700 text-white font-bold w-full p-2 rounded-lg hover:bg-green-100 hover:text-green-700 transition-all"
+								? "bg-gray-300 text-white w-full p-2 rounded-lg mb-8"
+								: "bg-green-700 text-white font-bold w-full p-2 rounded-lg hover:bg-green-100 hover:text-green-700 transition-all mb-8"
 						}
 					>
 						Calcular
