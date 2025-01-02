@@ -4,8 +4,8 @@ import { Summary } from "./components/Summary";
 function App() {
 	const [displayValue, setDisplayValue] = useState<string>("");
 	const [optionSelected, setOptionSelected] = useState<string>("");
-	const [valueToCalculate, setValueToCalculate] = useState<number>();
-	const [taxesToPay, setTaxesToPay] = useState<number>();
+	const [valueToCalculate, setValueToCalculate] = useState<number>(0);
+	const [taxesToPay, setTaxesToPay] = useState<number>(0);
 
 	const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const rawValue = e.target.value.replace(/[^\d]/g, "");
