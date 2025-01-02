@@ -64,62 +64,68 @@ function App() {
 						Calculadora de impuestos para Colombianos 🇨🇴
 					</h1>
 				</div>
-				<h2 className="mb-5">
+				<h2 className="mb-5 text-center">
 					¿No sabes cómo calcular tus impuestos? No te preocupes, esta
 					herramienta lo hace todo por ti
 				</h2>
-				<form onSubmit={calculateTaxes}>
-					<label className="block mb-3 font-bold" htmlFor="tax">
-						Elige el tipo de impuesto a calcular
-					</label>
-					<select
-						id="tax"
-						className="mb-5 w-full p-2 border border-gray-300 rounded-lg"
-						value={optionSelected}
-						onChange={(e) => setOptionSelected(e.target.value)}
-					>
-						<option value="" disabled>
-							-- Selecciona --
-						</option>
-						<option value="1">4x1000</option>
-						<option value="2">IVA</option>
-						<option disabled>Próximamente se agregarán nuevos impuestos</option>
-					</select>
-					<label className="block mb-3 font-bold" htmlFor="value">
-						Valor a calcular
-					</label>
-					<input
-						id="value"
-						type="text"
-						inputMode="numeric"
-						value={displayValue}
-						onChange={handleValueChange}
-						placeholder="$ 0"
-						className="mb-5 w-full p-2 border border-gray-300 rounded-lg"
-					/>
-					<button
-						onClick={calculateTaxes}
-						type="button"
-						disabled={isButtonDisabled}
-						className={
-							isButtonDisabled
-								? "bg-gray-300 text-white w-full p-2 rounded-lg mb-8"
-								: "bg-green-700 text-white font-bold w-full p-2 rounded-lg hover:bg-green-100 hover:text-green-700 transition-all mb-8"
-						}
-					>
-						Calcular
-					</button>
-				</form>
-				{taxesToPay > 1 ? <Summary result={taxesToPay} /> : null}
-				{taxesToPay > 1 ? (
-					<button
-						type="button"
-						onClick={cleanAllValues}
-						className="bg-red-400 w-full text-white rounded-lg p-2 mb-8 font-bold"
-					>
-						Borrar todo
-					</button>
-				) : null}
+				<div className="md:flex md:gap-5">
+					<form onSubmit={calculateTaxes} className="w-full">
+						<label className="block mb-3 font-bold" htmlFor="tax">
+							Elige el tipo de impuesto a calcular
+						</label>
+						<select
+							id="tax"
+							className="mb-5 w-full  p-2 border border-gray-300 rounded-lg"
+							value={optionSelected}
+							onChange={(e) => setOptionSelected(e.target.value)}
+						>
+							<option value="" disabled>
+								-- Selecciona --
+							</option>
+							<option value="1">4x1000</option>
+							<option value="2">IVA</option>
+							<option disabled>
+								Próximamente se agregarán nuevos impuestos
+							</option>
+						</select>
+						<label className="block mb-3 font-bold" htmlFor="value">
+							Valor a calcular
+						</label>
+						<input
+							id="value"
+							type="text"
+							inputMode="numeric"
+							value={displayValue}
+							onChange={handleValueChange}
+							placeholder="$ 0"
+							className="block mb-5 w-full  p-2 border border-gray-300 rounded-lg"
+						/>
+						<button
+							onClick={calculateTaxes}
+							type="button"
+							disabled={isButtonDisabled}
+							className={
+								isButtonDisabled
+									? "bg-gray-300 text-white w-full p-2 rounded-lg mb-8"
+									: "bg-green-700 text-white font-bold w-full p-2 rounded-lg hover:bg-green-100 hover:text-green-700 transition-all mb-8"
+							}
+						>
+							Calcular
+						</button>
+					</form>
+					<div className="w-full">
+						{taxesToPay > 1 ? <Summary result={taxesToPay} /> : null}
+						{taxesToPay > 1 ? (
+							<button
+								type="button"
+								onClick={cleanAllValues}
+								className="bg-red-400 w-full text-white rounded-lg p-2 mb-8 font-bold"
+							>
+								Borrar todo
+							</button>
+						) : null}
+					</div>
+				</div>
 			</div>
 		</main>
 	);
