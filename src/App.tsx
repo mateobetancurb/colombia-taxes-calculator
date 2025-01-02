@@ -23,7 +23,12 @@ function App() {
 
 	const isButtonDisabled = !displayValue || !optionSelected.trim();
 
-	const calculateTaxes = () => {
+	const calculateTaxes = (
+		e:
+			| React.MouseEvent<HTMLButtonElement, MouseEvent>
+			| React.FormEvent<HTMLFormElement>
+	) => {
+		e.preventDefault();
 		switch (optionSelected) {
 			case "1":
 				return setTaxesToPay((valueToCalculate * 4) / 1000);
@@ -57,7 +62,7 @@ function App() {
 					¿No sabes cómo calcular tus impuestos? No te preocupes, esta
 					herramienta lo hace todo por ti
 				</h2>
-				<form action="">
+				<form onSubmit={calculateTaxes}>
 					<label className="block mb-3 font-bold" htmlFor="tax">
 						Elige el tipo de impuesto a calcular
 					</label>
@@ -99,7 +104,7 @@ function App() {
 						Calcular
 					</button>
 				</form>
-				<Summary result={taxesToPay} />
+				{taxesToPay > 1 ? <Summary result={taxesToPay} /> : null}
 			</div>
 		</main>
 	);
