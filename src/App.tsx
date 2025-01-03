@@ -6,6 +6,10 @@ function App() {
 	const [optionSelected, setOptionSelected] = useState<string>("");
 	const [valueToCalculate, setValueToCalculate] = useState<number>(0);
 	const [taxesToPay, setTaxesToPay] = useState<number>(0);
+	const [showPercentageByUser, setShowPercentageByUser] =
+		useState<boolean>(false);
+	const [personalizedPercentage, setPersonalizedPercentage] =
+		useState<string>("");
 
 	const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const rawValue = e.target.value.replace(/[^\d]/g, "");
@@ -29,15 +33,19 @@ function App() {
 			| React.FormEvent<HTMLFormElement>
 	) => {
 		e.preventDefault();
-		switch (optionSelected) {
-			case "1":
-				return setTaxesToPay((valueToCalculate * 4) / 1000);
-			case "2":
-				return setTaxesToPay((valueToCalculate * 19) / 100);
-			case "3":
-				return setTaxesToPay((valueToCalculate * 5) / 100);
-			case "4":
-				return setTaxesToPay((valueToCalculate * 8) / 100);
+		if (showPercentageByUser) {
+			setTaxesToPay((valueToCalculate * personalizedPercentage) / 100);
+		} else {
+			switch (optionSelected) {
+				case "1":
+					return setTaxesToPay((valueToCalculate * 4) / 1000);
+				case "2":
+					return setTaxesToPay((valueToCalculate * 19) / 100);
+				case "3":
+					return setTaxesToPay((valueToCalculate * 5) / 100);
+				case "4":
+					return setTaxesToPay((valueToCalculate * 8) / 100);
+			}
 		}
 	};
 
@@ -74,26 +82,48 @@ function App() {
 				</h2>
 				<div className="md:flex md:gap-5 md:items-center">
 					<form onSubmit={calculateTaxes} className="w-full">
-						<label className="block mb-3 font-bold" htmlFor="tax">
-							Elige el tipo de impuesto a calcular
-						</label>
-						<select
-							id="tax"
-							className="mb-5 w-full p-2 border border-gray-300 rounded-lg"
-							value={optionSelected}
-							onChange={(e) => setOptionSelected(e.target.value)}
-						>
-							<option value="" disabled>
-								-- Selecciona --
-							</option>
-							<option value="1">4x1000</option>
-							<option value="4">Impuesto al consumo (8%)</option>
-							<option value="2">IVA (19%)</option>
-							<option value="3">IVA (5%)</option>
-							<option disabled>
-								Próximamente se agregarán nuevos impuestos
-							</option>
-						</select>
+						{showPercentageByUser ? null : (
+							<>
+								<label className="block mb-3 font-bold" htmlFor="tax">
+									Elige el tipo de impuesto a calcular
+								</label>
+								<select
+									id="tax"
+									className="mb-5 w-full p-2 border border-gray-300 rounded-lg"
+									value={optionSelected}
+									onChange={(e) => setOptionSelected(e.target.value)}
+								>
+									<option value="" disabled>
+										-- Selecciona --
+									</option>
+									<option value="1">4x1000</option>
+									<option value="4">Impuesto al consumo (8%)</option>
+									<option value="2">IVA (19%)</option>
+									<option value="3">IVA (5%)</option>
+									{/* <option value="5">Porcentaje personalizado</option> */}
+									<option disabled>
+										Próximamente se agregarán nuevos impuestos
+									</option>
+								</select>
+							</>
+						)}
+
+						{showPercentageByUser && (
+							<>
+								<label className="block mb-3 font-bold" htmlFor="percentage">
+									Escribe aquí tu porcentaje
+								</label>
+								<input
+									id="percentage"
+									type="text"
+									inputMode="numeric"
+									value={personalizedPercentage}
+									onChange={(e) => setPersonalizedPercentage(e.target.value)}
+									placeholder="% 0"
+									className="block mb-5 w-full  p-2 border border-gray-300 rounded-lg"
+								/>
+							</>
+						)}
 						<label className="block mb-3 font-bold" htmlFor="value">
 							Valor a calcular
 						</label>
@@ -106,6 +136,17 @@ function App() {
 							placeholder="$ 0"
 							className="block mb-5 w-full  p-2 border border-gray-300 rounded-lg"
 						/>
+						<div className="flex gap-2 items-center mb-5">
+							<input
+								type="checkbox"
+								id="percentage"
+								onChange={() => setShowPercentageByUser(!showPercentageByUser)}
+								className="accent-green-700 w-5 h-5"
+							/>
+							<label htmlFor="percentage">
+								¿Quieres calcular un porcentaje personalizado?
+							</label>
+						</div>
 						<button
 							onClick={calculateTaxes}
 							type="button"
