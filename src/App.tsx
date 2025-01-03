@@ -36,6 +36,8 @@ function App() {
 				return setTaxesToPay((valueToCalculate * 19) / 100);
 			case "3":
 				return setTaxesToPay((valueToCalculate * 5) / 100);
+			case "4":
+				return setTaxesToPay((valueToCalculate * 8) / 100);
 		}
 	};
 
@@ -87,6 +89,7 @@ function App() {
 							<option value="1">4x1000</option>
 							<option value="2">IVA (19%)</option>
 							<option value="3">IVA (5%)</option>
+							<option value="4">Impuesto al consumo (8%)</option>
 							<option disabled>
 								Próximamente se agregarán nuevos impuestos
 							</option>
