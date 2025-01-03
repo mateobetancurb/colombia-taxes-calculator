@@ -25,7 +25,9 @@ function App() {
 		setValueToCalculate(Number(rawValue));
 	};
 
-	const isButtonDisabled = !displayValue || !optionSelected.trim();
+	const isButtonDisabled = showPercentageByUser
+		? !displayValue || !personalizedPercentage.trim()
+		: !displayValue || !optionSelected.trim();
 
 	const calculateTaxes = (
 		e:
@@ -53,6 +55,8 @@ function App() {
 		setDisplayValue("");
 		setOptionSelected("");
 		setTaxesToPay(0);
+		setShowPercentageByUser(false);
+		setPersonalizedPercentage("");
 	};
 
 	return (
@@ -116,6 +120,7 @@ function App() {
 								<input
 									id="percentage"
 									type="text"
+									checked={showPercentageByUser}
 									inputMode="numeric"
 									value={personalizedPercentage}
 									onChange={(e) => setPersonalizedPercentage(e.target.value)}
