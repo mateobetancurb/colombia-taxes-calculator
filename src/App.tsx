@@ -49,7 +49,7 @@ function App() {
 
 	return (
 		<main className="bg-[#e0fff1] h-screen py-10">
-			<div className="w-[90%] p-5 md:w-2/3 mx-auto bg-white rounded-lg shadow-lg">
+			<div className="w-[90%] p-5 md:w-2/3 xl:w-1/2  mx-auto bg-white rounded-lg shadow-lg">
 				<div className="flex items-center gap-3 justify-center py-5 mb-5">
 					<svg
 						fill="none"
