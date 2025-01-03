@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Summary } from "./components/Summary";
+import { Footer } from "./components/Footer";
 
 function App() {
 	const [displayValue, setDisplayValue] = useState<string>("");
@@ -145,7 +146,7 @@ function App() {
 								checked={showPercentageByUser}
 								onChange={() => setShowPercentageByUser(!showPercentageByUser)}
 								onClick={cleanAllValues}
-								className="accent-green-700 w-5 h-5"
+								className="accent-green-700 w-5 h-5 cursor-pointer"
 							/>
 							<label htmlFor="percentage">
 								¿Quieres calcular un porcentaje personalizado?
@@ -178,6 +179,7 @@ function App() {
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</main>
 	);
 }
