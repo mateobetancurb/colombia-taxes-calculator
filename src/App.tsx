@@ -87,9 +87,9 @@ function App() {
 								-- Selecciona --
 							</option>
 							<option value="1">4x1000</option>
+							<option value="4">Impuesto al consumo (8%)</option>
 							<option value="2">IVA (19%)</option>
 							<option value="3">IVA (5%)</option>
-							<option value="4">Impuesto al consumo (8%)</option>
 							<option disabled>
 								Próximamente se agregarán nuevos impuestos
 							</option>
