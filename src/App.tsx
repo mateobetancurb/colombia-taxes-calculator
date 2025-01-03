@@ -34,6 +34,8 @@ function App() {
 				return setTaxesToPay((valueToCalculate * 4) / 1000);
 			case "2":
 				return setTaxesToPay((valueToCalculate * 19) / 100);
+			case "3":
+				return setTaxesToPay((valueToCalculate * 5) / 100);
 		}
 	};
 
@@ -65,8 +67,8 @@ function App() {
 					</h1>
 				</div>
 				<h2 className="mb-5 text-center">
-					¿No sabes cómo calcular el 4x1000 y otros impuestos? No te preocupes, esta
-					herramienta lo hace todo por ti
+					¿No sabes cómo calcular el 4x1000 y otros impuestos? No te preocupes,
+					esta herramienta lo hace todo por ti
 				</h2>
 				<div className="md:flex md:gap-5 md:items-center">
 					<form onSubmit={calculateTaxes} className="w-full">
@@ -83,7 +85,8 @@ function App() {
 								-- Selecciona --
 							</option>
 							<option value="1">4x1000</option>
-							<option value="2">IVA</option>
+							<option value="2">IVA (19%)</option>
+							<option value="3">IVA (5%)</option>
 							<option disabled>
 								Próximamente se agregarán nuevos impuestos
 							</option>
