@@ -36,7 +36,7 @@ function App() {
 	) => {
 		e.preventDefault();
 		if (showPercentageByUser) {
-			setTaxesToPay((valueToCalculate * personalizedPercentage) / 100);
+			setTaxesToPay((valueToCalculate * Number(personalizedPercentage)) / 100);
 		} else {
 			switch (optionSelected) {
 				case "1":
