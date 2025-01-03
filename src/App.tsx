@@ -65,7 +65,7 @@ function App() {
 					</h1>
 				</div>
 				<h2 className="mb-5 text-center">
-					¿No sabes cómo calcular tus impuestos? No te preocupes, esta
+					¿No sabes cómo calcular el 4x1000 y otros impuestos? No te preocupes, esta
 					herramienta lo hace todo por ti
 				</h2>
 				<div className="md:flex md:gap-5 md:items-center">
