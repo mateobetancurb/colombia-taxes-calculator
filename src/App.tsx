@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Summary } from "./components/Summary";
-import { Footer } from "./components/Footer";
+// import { Footer } from "./components/Footer";
 
 function App() {
 	const [displayValue, setDisplayValue] = useState<string>("");
