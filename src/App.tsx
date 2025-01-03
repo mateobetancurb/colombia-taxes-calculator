@@ -142,6 +142,7 @@ function App() {
 							<input
 								type="checkbox"
 								id="percentage"
+								checked={showPercentageByUser}
 								onChange={() => setShowPercentageByUser(!showPercentageByUser)}
 								onClick={cleanAllValues}
 								className="accent-green-700 w-5 h-5"
