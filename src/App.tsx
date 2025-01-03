@@ -104,14 +104,12 @@ function App() {
 									<option value="4">Impuesto al consumo (8%)</option>
 									<option value="2">IVA (19%)</option>
 									<option value="3">IVA (5%)</option>
-									{/* <option value="5">Porcentaje personalizado</option> */}
 									<option disabled>
 										Próximamente se agregarán nuevos impuestos
 									</option>
 								</select>
 							</>
 						)}
-
 						{showPercentageByUser && (
 							<>
 								<label className="block mb-3 font-bold" htmlFor="percentage">
@@ -146,6 +144,7 @@ function App() {
 								type="checkbox"
 								id="percentage"
 								onChange={() => setShowPercentageByUser(!showPercentageByUser)}
+								onClick={cleanAllValues}
 								className="accent-green-700 w-5 h-5"
 							/>
 							<label htmlFor="percentage">
