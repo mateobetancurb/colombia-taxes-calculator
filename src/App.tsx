@@ -105,9 +105,6 @@ function App() {
 									<option value="4">Impuesto al consumo (8%)</option>
 									<option value="3">IVA (5%)</option>
 									<option value="2">IVA (19%)</option>
-									<option disabled>
-										Próximamente se agregarán nuevos impuestos
-									</option>
 								</select>
 							</>
 						)}
