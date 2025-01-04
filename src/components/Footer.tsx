@@ -3,7 +3,7 @@ function Footer() {
 	const currentYear = date.getFullYear();
 
 	return (
-		<p className="absolute bottom-0 text-sm w-full text-center py-3">
+		<p className="mt-auto text-sm w-full text-center py-3">
 			Desarrollado por{" "}
 			<a
 				href="https://www.linkedin.com/in/mateobetancurb"
