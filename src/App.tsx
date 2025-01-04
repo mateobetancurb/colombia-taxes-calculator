@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Summary } from "./components/Summary";
-// import { Footer } from "./components/Footer";
+import { Footer } from "./components/Footer";
 
 function App() {
 	const [displayValue, setDisplayValue] = useState<string>("");
@@ -61,8 +61,8 @@ function App() {
 	};
 
 	return (
-		<main className="bg-[#e0fff1] h-screen py-10">
-			<div className="w-[90%] p-5 md:w-2/3 xl:w-1/2  mx-auto bg-white rounded-lg shadow-lg">
+		<main className="bg-[#e0fff1] min-h-screen py-10 ">
+			<div className="w-[90%] p-5 md:w-2/3 xl:w-1/2 mx-auto bg-white rounded-lg shadow-lg">
 				<div className="flex items-center md:gap-3 justify-center py-5 mb-5">
 					<svg
 						fill="none"
@@ -176,7 +176,7 @@ function App() {
 					</div>
 				</div>
 			</div>
-			{/* <Footer /> */}
+			<Footer />
 		</main>
 	);
 }
