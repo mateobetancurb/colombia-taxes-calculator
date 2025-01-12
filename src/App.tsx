@@ -78,7 +78,7 @@ function App() {
 						/>
 					</svg>
 					<h1 className="text-xl w-fit font-bold text-center">
-						Calculadora de impuestos para Colombianos 🇨🇴
+						Calculadora del 4x1000 y otros impuestos en Colombia 🇨🇴
 					</h1>
 				</div>
 				<h2 className="mb-5 text-center">
