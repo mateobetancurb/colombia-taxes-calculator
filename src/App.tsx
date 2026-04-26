@@ -8,6 +8,7 @@ import { CalculatorTabs } from "./components/calculator/CalculatorTabs";
 import { ResultsPanel } from "./components/results/ResultsPanel";
 import { calculateTaxSimulation, type TaxComputation } from "./helpers/tax-calculator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./components/ui/card";
+import { app as esApp, etiquetaPerfil } from "./locales/es";
 
 function App() {
   const [computation, setComputation] = useState<TaxComputation>(
@@ -70,8 +71,10 @@ function App() {
           <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 md:px-8">
             <section id="dashboard" className="space-y-4">
               <div>
-                <p className="text-sm uppercase tracking-wide text-emerald-600">Dashboard</p>
-                <h2 className="text-2xl font-semibold">Financial Overview</h2>
+                <p className="text-sm uppercase tracking-wide text-emerald-600">
+                  {esApp.seccionPanel}
+                </p>
+                <h2 className="text-2xl font-semibold">{esApp.vistaFinanciera}</h2>
               </div>
               <SummaryCards computation={computation} />
               <IncomeDonutChart computation={computation} />
@@ -91,28 +94,23 @@ function App() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Profile Context</CardTitle>
-                  <CardDescription>
-                    Quick interpretation of your current simulation.
-                  </CardDescription>
+                  <CardTitle>{esApp.contextoPerfil}</CardTitle>
+                  <CardDescription>{esApp.contextoPerfilDescripcion}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
                   <p>
-                    Profile selected:{" "}
-                    <span className="font-semibold capitalize text-slate-900 dark:text-slate-100">
-                      {computation.profile}
+                    {esApp.perfilSeleccionado}:{" "}
+                    <span className="font-semibold text-slate-900 dark:text-slate-100">
+                      {etiquetaPerfil(computation.profile)}
                     </span>
                   </p>
                   <p>
-                    Social security rate applied:{" "}
+                    {esApp.tasaSeguridadSocial}:{" "}
                     <span className="font-semibold text-slate-900 dark:text-slate-100">
                       {(computation.socialSecurityRate * 100).toFixed(0)}%
                     </span>
                   </p>
-                  <p>
-                    Use the simulator values as guidance and validate final filing with your
-                    accountant.
-                  </p>
+                  <p>{esApp.disclaimerContador}</p>
                 </CardContent>
               </Card>
             </section>

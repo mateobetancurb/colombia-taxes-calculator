@@ -1,6 +1,7 @@
 import { Menu, Moon, Sun } from "lucide-react";
 import { Button } from "../ui/button";
 import { UVT_2026, formatCopCurrency } from "../../helpers";
+import { encabezado } from "../../locales/es";
 
 interface HeaderProps {
   isDark: boolean;
@@ -18,7 +19,7 @@ function Header({ isDark, onToggleTheme, onOpenSidebar }: HeaderProps) {
             size="icon"
             className="lg:hidden"
             onClick={onOpenSidebar}
-            aria-label="Open navigation menu"
+            aria-label={encabezado.abrirMenu}
           >
             <Menu className="h-5 w-5" />
           </Button>
@@ -32,7 +33,12 @@ function Header({ isDark, onToggleTheme, onOpenSidebar }: HeaderProps) {
           </div>
         </div>
 
-        <Button variant="outline" size="icon" onClick={onToggleTheme} aria-label="Toggle dark mode">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={onToggleTheme}
+          aria-label={encabezado.alternarTema}
+        >
           {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </Button>
       </div>

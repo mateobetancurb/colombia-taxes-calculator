@@ -11,6 +11,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import { calculadora as es } from "../../locales/es";
 
 interface CalculatorTabsProps {
   onCalculationChange: (computation: TaxComputation) => void;
@@ -51,15 +52,11 @@ function CalculatorTabs({ onCalculationChange }: CalculatorTabsProps) {
 
   const errors = useMemo(() => {
     return {
-      grossIncome: parsedValues.grossIncome <= 0 ? "Gross income must be greater than COP 0." : "",
+      grossIncome: parsedValues.grossIncome <= 0 ? es.errorIngreso : "",
       rentaExenta:
-        parsedValues.rentaExenta > parsedValues.grossIncome
-          ? "Renta exenta cannot be greater than gross income."
-          : "",
+        parsedValues.rentaExenta > parsedValues.grossIncome ? es.errorRentaExenta : "",
       otherDeductions:
-        parsedValues.otherDeductions > parsedValues.grossIncome
-          ? "This value cannot exceed gross income."
-          : "",
+        parsedValues.otherDeductions > parsedValues.grossIncome ? es.errorOtraDeduccion : "",
     };
   }, [parsedValues]);
 
@@ -88,43 +85,39 @@ function CalculatorTabs({ onCalculationChange }: CalculatorTabsProps) {
   };
 
   const profileLabel =
-    profile === "employee" ? "Employee deductions" : "Freelancer deductible costs";
+    profile === "employee" ? es.deduccionesEmpleado : es.costosIndependiente;
 
   return (
     <Card id="calculator">
       <CardHeader>
-        <CardTitle>Tax Calculator</CardTitle>
-        <CardDescription>
-          Choose your profile and enter monthly values in COP to simulate taxes.
-        </CardDescription>
+        <CardTitle>{es.titulo}</CardTitle>
+        <CardDescription>{es.descripcion}</CardDescription>
       </CardHeader>
       <CardContent>
         <TooltipProvider delayDuration={120}>
           <Tabs value={profile} onValueChange={(value) => setProfile(value as ProfileType)}>
             <TabsList className="w-full md:w-auto">
               <TabsTrigger value="employee" className="w-1/2 md:w-auto">
-                Employee
+                {es.empleado}
               </TabsTrigger>
               <TabsTrigger value="freelancer" className="w-1/2 md:w-auto">
-                Freelancer
+                {es.independiente}
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="employee">
-              <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
-                Uses social security base rate of 8%.
-              </p>
+              <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">{es.tasaEmpleado}</p>
             </TabsContent>
             <TabsContent value="freelancer">
               <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
-                Uses social security base rate of 16%.
+                {es.tasaIndependiente}
               </p>
             </TabsContent>
           </Tabs>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="grossIncome">Gross monthly income</Label>
+              <Label htmlFor="grossIncome">{es.ingresoBruto}</Label>
               <Input
                 id="grossIncome"
                 inputMode="numeric"
@@ -145,20 +138,18 @@ function CalculatorTabs({ onCalculationChange }: CalculatorTabsProps) {
 
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Label htmlFor="rentaExenta">Renta Exenta</Label>
+                <Label htmlFor="rentaExenta">{es.rentaExenta}</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
                       type="button"
                       className="text-slate-500 hover:text-slate-900 dark:hover:text-slate-100"
-                      aria-label="What does Renta Exenta mean?"
+                      aria-label={es.rentaExentaAyuda}
                     >
                       <Info className="h-4 w-4" />
                     </button>
                   </TooltipTrigger>
-                  <TooltipContent>
-                    Income exempt from withholding according to Colombian tax rules.
-                  </TooltipContent>
+                  <TooltipContent>{es.rentaExentaTooltip}</TooltipContent>
                 </Tooltip>
               </div>
               <Input
