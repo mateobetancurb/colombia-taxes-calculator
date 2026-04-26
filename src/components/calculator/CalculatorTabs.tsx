@@ -1,91 +1,69 @@
-import { useEffect, useMemo, useState } from "react";
-import { Info } from "lucide-react";
+import { useEffect, useMemo } from "react";
 import {
-  calculateTaxSimulation,
-  type ProfileType,
-  type TaxComputation,
-} from "../../helpers/tax-calculator";
+  calculateForCalculator,
+  calculatorDefinitions,
+  type CalculationResult,
+  type CalculatorId,
+  type CalculatorInputState,
+} from "../../helpers/calculators";
 import { formatCopInput, parseCopInput } from "../../helpers";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { calculadora as es } from "../../locales/es";
+import { Button } from "../ui/button";
 
 interface CalculatorTabsProps {
-  onCalculationChange: (computation: TaxComputation) => void;
+  activeCalculatorId: CalculatorId;
+  calculatorInputs: Record<CalculatorId, CalculatorInputState>;
+  onCalculatorChange: (calculatorId: CalculatorId) => void;
+  onInputChange: (calculatorId: CalculatorId, input: CalculatorInputState) => void;
+  onCalculationChange: (computation: CalculationResult) => void;
 }
 
-interface FormState {
-  grossIncome: string;
-  rentaExenta: string;
-  otherDeductions: string;
-}
-
-const defaultFormState: FormState = {
-  grossIncome: "",
-  rentaExenta: "",
-  otherDeductions: "",
-};
-
-function formatRawToCopInput(rawValue: string) {
-  return formatCopInput(parseCopInput(rawValue));
-}
-
-function CalculatorTabs({ onCalculationChange }: CalculatorTabsProps) {
-  const [profile, setProfile] = useState<ProfileType>("employee");
-  const [formValues, setFormValues] = useState<FormState>(defaultFormState);
-  const [isTouched, setIsTouched] = useState<Record<keyof FormState, boolean>>({
-    grossIncome: false,
-    rentaExenta: false,
-    otherDeductions: false,
-  });
-
-  const parsedValues = useMemo(() => {
-    return {
-      grossIncome: parseCopInput(formValues.grossIncome),
-      rentaExenta: parseCopInput(formValues.rentaExenta),
-      otherDeductions: parseCopInput(formValues.otherDeductions),
-    };
-  }, [formValues]);
-
-  const errors = useMemo(() => {
-    return {
-      grossIncome: parsedValues.grossIncome <= 0 ? es.errorIngreso : "",
-      rentaExenta:
-        parsedValues.rentaExenta > parsedValues.grossIncome ? es.errorRentaExenta : "",
-      otherDeductions:
-        parsedValues.otherDeductions > parsedValues.grossIncome ? es.errorOtraDeduccion : "",
-    };
-  }, [parsedValues]);
+function CalculatorTabs({
+  activeCalculatorId,
+  calculatorInputs,
+  onCalculatorChange,
+  onInputChange,
+  onCalculationChange,
+}: CalculatorTabsProps) {
+  const activeCalculator = useMemo(
+    () => calculatorDefinitions.find((item) => item.id === activeCalculatorId) || calculatorDefinitions[0],
+    [activeCalculatorId],
+  );
 
   const computation = useMemo(() => {
-    return calculateTaxSimulation({
-      profile,
-      grossIncome: parsedValues.grossIncome,
-      rentaExenta: parsedValues.rentaExenta,
-      otherDeductions: parsedValues.otherDeductions,
-    });
-  }, [parsedValues, profile]);
+    return calculateForCalculator(activeCalculator.id, calculatorInputs[activeCalculator.id]);
+  }, [activeCalculator.id, calculatorInputs]);
 
   useEffect(() => {
     onCalculationChange(computation);
   }, [computation, onCalculationChange]);
 
-  const updateField = (field: keyof FormState, value: string) => {
-    setFormValues((prev) => ({
-      ...prev,
-      [field]: formatRawToCopInput(value),
-    }));
+  const updateNumberField = (fieldId: string, value: string) => {
+    const nextValue = parseCopInput(value);
+    const currentInput = calculatorInputs[activeCalculator.id];
+    onInputChange(activeCalculator.id, {
+      ...currentInput,
+      numbers: {
+        ...currentInput.numbers,
+        [fieldId]: nextValue,
+      },
+    });
   };
 
-  const markTouched = (field: keyof FormState) => {
-    setIsTouched((prev) => ({ ...prev, [field]: true }));
+  const updateSelectField = (fieldId: string, value: string) => {
+    const currentInput = calculatorInputs[activeCalculator.id];
+    onInputChange(activeCalculator.id, {
+      ...currentInput,
+      selects: {
+        ...currentInput.selects,
+        [fieldId]: value,
+      },
+    });
   };
-
-  const profileLabel =
-    profile === "employee" ? es.deduccionesEmpleado : es.costosIndependiente;
 
   return (
     <Card id="calculator">
@@ -94,103 +72,71 @@ function CalculatorTabs({ onCalculationChange }: CalculatorTabsProps) {
         <CardDescription>{es.descripcion}</CardDescription>
       </CardHeader>
       <CardContent>
-        <TooltipProvider delayDuration={120}>
-          <Tabs value={profile} onValueChange={(value) => setProfile(value as ProfileType)}>
-            <TabsList className="w-full md:w-auto">
-              <TabsTrigger value="employee" className="w-1/2 md:w-auto">
-                {es.empleado}
+        <Tabs value={activeCalculator.id} onValueChange={(value) => onCalculatorChange(value as CalculatorId)}>
+          <TabsList className="flex h-auto w-full flex-wrap gap-2 bg-transparent p-0">
+            {calculatorDefinitions.map((calculator) => (
+              <TabsTrigger
+                key={calculator.id}
+                value={calculator.id}
+                className="rounded-md border border-slate-200 px-3 py-1.5 text-xs data-[state=active]:border-emerald-500 data-[state=active]:bg-emerald-50 dark:border-slate-700 dark:data-[state=active]:bg-emerald-900/30"
+              >
+                {calculator.title}
               </TabsTrigger>
-              <TabsTrigger value="freelancer" className="w-1/2 md:w-auto">
-                {es.independiente}
-              </TabsTrigger>
-            </TabsList>
+            ))}
+          </TabsList>
 
-            <TabsContent value="employee">
-              <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">{es.tasaEmpleado}</p>
-            </TabsContent>
-            <TabsContent value="freelancer">
-              <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
-                {es.tasaIndependiente}
-              </p>
-            </TabsContent>
-          </Tabs>
+          {calculatorDefinitions.map((calculator) => {
+            const inputState = calculatorInputs[calculator.id];
+            return (
+              <TabsContent key={calculator.id} value={calculator.id} className="space-y-4 pt-4">
+                <p className="text-sm text-slate-500 dark:text-slate-400">{calculator.description}</p>
+                <div className="grid gap-4 md:grid-cols-2">
+                  {calculator.numberFields.map((field) => (
+                    <div key={field.id} className="space-y-2">
+                      <Label htmlFor={`${calculator.id}-${field.id}`}>{field.label}</Label>
+                      <Input
+                        id={`${calculator.id}-${field.id}`}
+                        inputMode="numeric"
+                        placeholder="$ 0"
+                        value={formatCopInput(inputState.numbers[field.id] || 0)}
+                        onChange={(event) => updateNumberField(field.id, event.target.value)}
+                      />
+                      {field.description ? (
+                        <p className="text-xs text-slate-500 dark:text-slate-400">{field.description}</p>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="grossIncome">{es.ingresoBruto}</Label>
-              <Input
-                id="grossIncome"
-                inputMode="numeric"
-                placeholder="$ 0"
-                value={formValues.grossIncome}
-                onChange={(event) => updateField("grossIncome", event.target.value)}
-                onBlur={() => markTouched("grossIncome")}
-                hasError={Boolean(isTouched.grossIncome && errors.grossIncome)}
-                aria-invalid={Boolean(isTouched.grossIncome && errors.grossIncome)}
-                aria-describedby="grossIncome-error"
-              />
-              {isTouched.grossIncome && errors.grossIncome ? (
-                <p id="grossIncome-error" className="text-sm text-rose-500">
-                  {errors.grossIncome}
-                </p>
-              ) : null}
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Label htmlFor="rentaExenta">{es.rentaExenta}</Label>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      type="button"
-                      className="text-slate-500 hover:text-slate-900 dark:hover:text-slate-100"
-                      aria-label={es.rentaExentaAyuda}
-                    >
-                      <Info className="h-4 w-4" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>{es.rentaExentaTooltip}</TooltipContent>
-                </Tooltip>
-              </div>
-              <Input
-                id="rentaExenta"
-                inputMode="numeric"
-                placeholder="$ 0"
-                value={formValues.rentaExenta}
-                onChange={(event) => updateField("rentaExenta", event.target.value)}
-                onBlur={() => markTouched("rentaExenta")}
-                hasError={Boolean(isTouched.rentaExenta && errors.rentaExenta)}
-                aria-invalid={Boolean(isTouched.rentaExenta && errors.rentaExenta)}
-                aria-describedby="rentaExenta-error"
-              />
-              {isTouched.rentaExenta && errors.rentaExenta ? (
-                <p id="rentaExenta-error" className="text-sm text-rose-500">
-                  {errors.rentaExenta}
-                </p>
-              ) : null}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="otherDeductions">{profileLabel}</Label>
-              <Input
-                id="otherDeductions"
-                inputMode="numeric"
-                placeholder="$ 0"
-                value={formValues.otherDeductions}
-                onChange={(event) => updateField("otherDeductions", event.target.value)}
-                onBlur={() => markTouched("otherDeductions")}
-                hasError={Boolean(isTouched.otherDeductions && errors.otherDeductions)}
-                aria-invalid={Boolean(isTouched.otherDeductions && errors.otherDeductions)}
-                aria-describedby="otherDeductions-error"
-              />
-              {isTouched.otherDeductions && errors.otherDeductions ? (
-                <p id="otherDeductions-error" className="text-sm text-rose-500">
-                  {errors.otherDeductions}
-                </p>
-              ) : null}
-            </div>
-          </div>
-        </TooltipProvider>
+                {calculator.selectFields?.length ? (
+                  <div className="grid gap-3 md:grid-cols-2">
+                    {calculator.selectFields.map((field) => (
+                      <div key={field.id} className="space-y-2">
+                        <Label>{field.label}</Label>
+                        <div className="flex flex-wrap gap-2">
+                          {field.options.map((option) => {
+                            const isSelected = inputState.selects[field.id] === option.value;
+                            return (
+                              <Button
+                                key={option.value}
+                                type="button"
+                                variant={isSelected ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => updateSelectField(field.id, option.value)}
+                              >
+                                {option.label}
+                              </Button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </TabsContent>
+            );
+          })}
+        </Tabs>
       </CardContent>
     </Card>
   );

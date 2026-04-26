@@ -14,6 +14,7 @@ const navItems = [
   { label: navegacion.panel, href: "#dashboard", icon: BarChart3 },
   { label: navegacion.calculadora, href: "#calculator", icon: Calculator },
   { label: navegacion.resultados, href: "#results", icon: BarChart3 },
+  { label: navegacion.historial, href: "#history", icon: Save },
 ];
 
 function Sidebar({ isOpen, onClose, onExportPdf, onSaveSimulation }: SidebarProps) {

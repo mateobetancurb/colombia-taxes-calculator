@@ -25,7 +25,7 @@ function Header({ isDark, onToggleTheme, onOpenSidebar }: HeaderProps) {
           </Button>
           <div>
             <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">
-              UVT 2026
+              {encabezado.etiquetaUvt}
             </p>
             <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">
               {formatCopCurrency(UVT_2026)}

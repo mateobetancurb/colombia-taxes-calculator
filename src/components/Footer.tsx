@@ -3,18 +3,20 @@ function Footer() {
   const currentYear = date.getFullYear();
 
   return (
-    <p className="mt-auto text-sm w-full text-center py-3">
-      Desarrollado por{" "}
-      <a
-        href="https://www.linkedin.com/in/mateobetancurb"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="underline"
-      >
-        Mateo
-      </a>{" "}
-      © {currentYear}
-    </p>
+    <footer className="mt-auto w-full py-3 text-center text-sm">
+      <p>
+        Desarrollado por{" "}
+        <a
+          href="https://www.linkedin.com/in/mateobetancurb"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          Mateo
+        </a>{" "}
+        © {currentYear}
+      </p>
+    </footer>
   );
 }
 
