@@ -3,7 +3,7 @@ import { AlertTriangle, BadgeDollarSign, Landmark, PiggyBank, ShieldCheck } from
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { CalculationResult } from "@/domain/tax/calculators";
 import { app, resumen } from "@/i18n/es";
-import { formatCopCurrency } from "@/utils/formatters";
+import { formatCopCurrency, formatPercentageValue } from "@/utils/formatters";
 
 interface SummaryCardsProps {
   computation: CalculationResult;
@@ -25,6 +25,7 @@ function SummaryCards({ computation }: SummaryCardsProps) {
       {
         title: computation.socialSecurityLabel,
         value: computation.socialSecurityAmount,
+        valueFormat: computation.calculatorId === "vehicleConsumptionTax" ? "percentage" : "currency",
         icon: ShieldCheck,
       },
       {
@@ -34,6 +35,7 @@ function SummaryCards({ computation }: SummaryCardsProps) {
       },
     ],
     [
+      computation.calculatorId,
       computation.netAmount,
       computation.netLabel,
       computation.primaryTaxAmount,
@@ -64,7 +66,11 @@ function SummaryCards({ computation }: SummaryCardsProps) {
             <card.icon className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-semibold tracking-tight">{formatCopCurrency(card.value)}</p>
+            <p className="text-2xl font-semibold tracking-tight">
+              {card.valueFormat === "percentage"
+                ? formatPercentageValue(card.value)
+                : formatCopCurrency(card.value)}
+            </p>
           </CardContent>
         </Card>
       ))}

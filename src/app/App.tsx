@@ -28,7 +28,7 @@ import {
   saveSimulation,
   type SavedSimulation,
 } from "@/services/storage/simulation-storage";
-import { formatCopCurrency } from "@/utils/formatters";
+import { formatCopCurrency, formatPercentageValue } from "@/utils/formatters";
 
 const LazyIncomeDonutChart = lazy(async () => {
   const module = await import("@/components/dashboard/IncomeDonutChart");
@@ -312,7 +312,9 @@ function App() {
                   <p>
                     {computation.socialSecurityLabel}:{" "}
                     <span className="font-semibold text-slate-900 dark:text-slate-100">
-                      {formatCopCurrency(computation.socialSecurityAmount)}
+                      {computation.calculatorId === "vehicleConsumptionTax"
+                        ? formatPercentageValue(computation.socialSecurityAmount)
+                        : formatCopCurrency(computation.socialSecurityAmount)}
                     </span>
                   </p>
                 </CardContent>
