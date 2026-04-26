@@ -168,10 +168,10 @@ function App() {
           <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 md:px-8">
             <section id="dashboard" className="space-y-4">
               <div>
-                <p className="text-sm uppercase tracking-wide text-emerald-600">
-                  {esApp.seccionPanel}
+                <h2 className="text-2xl font-semibold mb-5">{esApp.vistaFinanciera}</h2>
+                <p className="mt-2 max-w-3xl text-sm mb-10 text-slate-600 dark:text-slate-300">
+                  {esApp.vistaFinancieraDescripcion}
                 </p>
-                <h2 className="text-2xl font-semibold">{esApp.vistaFinanciera}</h2>
               </div>
               <SummaryCards computation={computation} />
               <Suspense
@@ -188,6 +188,7 @@ function App() {
             </section>
 
             <section>
+              <h2 className="text-2xl font-semibold">{esApp.seccionCalculadora}</h2>
               <CalculatorTabs
                 activeCalculatorId={activeCalculatorId}
                 calculatorInputs={calculatorInputs}
@@ -197,6 +198,7 @@ function App() {
             </section>
 
             <section className="grid gap-6 xl:grid-cols-[1.35fr_1fr]">
+              <h2 className="sr-only">{esApp.seccionResultados}</h2>
               <ResultsPanel
                 computation={computation}
                 onExportPdf={handleExportPdf}
@@ -237,6 +239,7 @@ function App() {
             </section>
 
             <section id="history">
+              <h2 className="sr-only">{esApp.seccionHistorial}</h2>
               <Card>
                 <CardHeader>
                   <CardTitle>{esApp.historialTitulo}</CardTitle>

@@ -3,7 +3,6 @@ import { memo } from "react";
 const currentYear = new Date().getFullYear();
 
 function Footer() {
-
   return (
     <footer className="mt-auto w-full py-3 text-center text-sm">
       <p>
