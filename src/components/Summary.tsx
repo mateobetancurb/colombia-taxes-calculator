@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { currencyFormat } from "../helpers";
+import { currencyFormat } from "@/utils/formatters";
 
 interface SummaryProps {
   result: number | string;

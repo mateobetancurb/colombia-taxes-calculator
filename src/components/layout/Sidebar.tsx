@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { BarChart3, Calculator, FileDown, Save } from "lucide-react";
-import { Button } from "../ui/button";
-import { cn } from "../../lib/utils";
-import { acciones, barraLateral, navegacion } from "../../locales/es";
+import { Button } from "@/components/ui/button";
+import { acciones, barraLateral, navegacion } from "@/i18n/es";
+import { cn } from "@/utils/cn";
 
 interface SidebarProps {
   isOpen: boolean;

@@ -4,14 +4,14 @@ import {
   getCalculatorById,
   type CalculatorId,
   type CalculatorInputState,
-} from "../../helpers/calculators";
-import { formatCopInput, parseCopInput } from "../../helpers";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { calculadora as es } from "../../locales/es";
-import { Button } from "../ui/button";
+} from "@/domain/tax/calculators";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { calculadora as es } from "@/i18n/es";
+import { formatCopInput, parseCopInput } from "@/utils/formatters";
 
 interface CalculatorTabsProps {
   activeCalculatorId: CalculatorId;

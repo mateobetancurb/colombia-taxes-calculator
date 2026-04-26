@@ -1,9 +1,9 @@
 import { memo, useMemo } from "react";
 import { BadgeDollarSign, Landmark, PiggyBank, ShieldCheck } from "lucide-react";
-import type { CalculationResult } from "../../helpers/calculators";
-import { formatCopCurrency } from "../../helpers";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { resumen, app } from "../../locales/es";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { CalculationResult } from "@/domain/tax/calculators";
+import { app, resumen } from "@/i18n/es";
+import { formatCopCurrency } from "@/utils/formatters";
 
 interface SummaryCardsProps {
   computation: CalculationResult;

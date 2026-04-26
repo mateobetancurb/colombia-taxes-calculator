@@ -12,8 +12,6 @@ const copNumberFormatter = new Intl.NumberFormat("es-CO", {
 
 const numberFormatterCache = new Map<number, Intl.NumberFormat>();
 
-export const UVT_2026 = 52374;
-
 export const formatCopCurrency = (value: number) => {
   return copCurrencyFormatter.format(Math.max(0, value || 0));
 };

@@ -1,4 +1,4 @@
-import { UVT_2026 } from "./index";
+import { UVT_2026 } from "@/domain/tax/constants";
 
 export type ProfileType = "employee" | "freelancer";
 
