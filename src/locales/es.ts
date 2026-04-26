@@ -26,7 +26,9 @@ export const barraLateral = {
 
 export const app = {
   seccionPanel: "Panel",
-  vistaFinanciera: "Vista general financiera",
+  vistaFinanciera: "Calculadora de impuestos y otras funcionalidades",
+  vistaFinancieraDescripcion:
+    "Este sitio te ayuda a simular impuestos en Colombia para estimar retención, aportes y tu ingreso neto mensual. Aquí también puedes encontrar una calculadora donde podrás simular el pago del IVA, retenciones, impuestos y otros escenarios tributarios para comparar resultados y guardar simulaciones.",
   seccionCalculadora: "Calculadora de impuestos",
   seccionResultados: "Resultados tributarios",
   seccionHistorial: "Historial de simulaciones",
