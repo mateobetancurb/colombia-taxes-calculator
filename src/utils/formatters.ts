@@ -16,6 +16,10 @@ export const formatCopCurrency = (value: number) => {
   return copCurrencyFormatter.format(Math.max(0, value || 0));
 };
 
+export const formatPercentageValue = (value: number) => {
+  return `${copNumberFormatter.format(Math.max(0, value || 0))}%`;
+};
+
 export const formatCopInput = (value: number) => {
   if (!value) {
     return "";

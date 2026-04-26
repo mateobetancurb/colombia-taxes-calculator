@@ -47,6 +47,19 @@ export const app = {
   historialVacio: "Aún no tienes simulaciones guardadas.",
   restaurar: "Restaurar",
   eliminar: "Eliminar",
+  reiniciarSimulacionActual: "Reiniciar simulación actual",
+  reiniciarSimulacionActualDescripcion:
+    "Si quieres arrancar de cero, restablece los campos del escenario activo sin afectar el historial.",
+  eliminarTodoHistorial: "Eliminar todo el historial",
+  confirmarEliminarHistorialTitulo: "Eliminar historial completo",
+  confirmarEliminarHistorialDescripcion:
+    "Esta acción eliminará todas las simulaciones guardadas en este dispositivo. No se puede deshacer.",
+  confirmarReiniciarSimulacionTitulo: "Reiniciar simulación actual",
+  confirmarReiniciarSimulacionDescripcion:
+    "Se limpiarán los datos del escenario actual y volverás al estado inicial del módulo por defecto.",
+  cancelar: "Cancelar",
+  confirmarEliminar: "Sí, eliminar",
+  confirmarReiniciar: "Sí, reiniciar",
 } as const;
 
 export const calculadora = {
