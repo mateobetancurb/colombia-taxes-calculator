@@ -1,33 +1,33 @@
 import { BadgeDollarSign, Landmark, PiggyBank, ShieldCheck } from "lucide-react";
-import type { TaxComputation } from "../../helpers/tax-calculator";
+import type { CalculationResult } from "../../helpers/calculators";
 import { formatCopCurrency } from "../../helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { resumen } from "../../locales/es";
+import { resumen, app } from "../../locales/es";
 
 interface SummaryCardsProps {
-  computation: TaxComputation;
+  computation: CalculationResult;
 }
 
 function SummaryCards({ computation }: SummaryCardsProps) {
   const cards = [
     {
-      title: resumen.totalImpuestos,
-      value: computation.totalTax,
+      title: resumen.baseReferencia,
+      value: computation.referenceAmount,
       icon: BadgeDollarSign,
     },
     {
-      title: resumen.retencion,
-      value: computation.retention,
+      title: computation.primaryTaxLabel,
+      value: computation.primaryTaxAmount,
       icon: Landmark,
     },
     {
-      title: resumen.seguridadSocial,
-      value: computation.socialSecurity,
+      title: computation.socialSecurityLabel,
+      value: computation.socialSecurityAmount,
       icon: ShieldCheck,
     },
     {
-      title: resumen.ingresoNeto,
-      value: computation.netIncome,
+      title: computation.netLabel,
+      value: computation.netAmount,
       icon: PiggyBank,
     },
   ];
@@ -47,6 +47,11 @@ function SummaryCards({ computation }: SummaryCardsProps) {
           </CardContent>
         </Card>
       ))}
+      <Card className="sm:col-span-2 xl:col-span-4">
+        <CardContent className="pt-4 text-sm text-slate-600 dark:text-slate-300">
+          {app.disclaimerContador}
+        </CardContent>
+      </Card>
     </div>
   );
 }

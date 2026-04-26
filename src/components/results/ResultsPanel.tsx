@@ -1,50 +1,71 @@
 import { Check, FileDown, Save } from "lucide-react";
-import type { TaxComputation } from "../../helpers/tax-calculator";
+import type { CalculationResult } from "../../helpers/calculators";
 import { formatCopCurrency, formatNumber } from "../../helpers";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { acciones, panelResultados } from "../../locales/es";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 interface ResultsPanelProps {
-  computation: TaxComputation;
+  computation: CalculationResult;
   onExportPdf: () => void;
+  onExportJson: () => void;
   onSaveSimulation: () => void;
   isSaved: boolean;
+  saveLabel: string;
+  onSaveLabelChange: (value: string) => void;
 }
 
-function ResultsPanel({ computation, onExportPdf, onSaveSimulation, isSaved }: ResultsPanelProps) {
+function ResultsPanel({
+  computation,
+  onExportPdf,
+  onExportJson,
+  onSaveSimulation,
+  isSaved,
+  saveLabel,
+  onSaveLabelChange,
+}: ResultsPanelProps) {
   return (
     <Card id="results">
       <CardHeader>
-        <CardTitle>{panelResultados.titulo}</CardTitle>
-        <CardDescription>{panelResultados.descripcion}</CardDescription>
+        <CardTitle>{computation.title}</CardTitle>
+        <CardDescription>{computation.description}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900/60">
-          <p className="text-sm text-slate-600 dark:text-slate-300">
-            {panelResultados.formula}
-          </p>
-          <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">
-            {`Retención = (${formatNumber(computation.baseUVT)} − 95) × 19 %`}
-          </p>
+          <p className="text-sm text-slate-600 dark:text-slate-300">{panelResultados.formula}</p>
+          <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">{computation.formula}</p>
           <p className="mt-1 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            {formatCopCurrency(computation.retention)}
+            {formatCopCurrency(computation.primaryTaxAmount)}
           </p>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="rounded-lg border border-slate-200 p-4 dark:border-slate-800">
             <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
-              {panelResultados.baseGravable}
+              {computation.taxableBaseLabel}
             </p>
-            <p className="text-lg font-semibold">{formatCopCurrency(computation.taxableBaseCOP)}</p>
+            <p className="text-lg font-semibold">
+              {formatCopCurrency(computation.taxableBaseAmount)}
+            </p>
           </div>
           <div className="rounded-lg border border-slate-200 p-4 dark:border-slate-800">
             <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
-              {panelResultados.baseUvt}
+              {computation.baseUvtLabel}
             </p>
             <p className="text-lg font-semibold">{formatNumber(computation.baseUVT)} UVT</p>
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="saveLabel">Nombre del perfil</Label>
+          <Input
+            id="saveLabel"
+            value={saveLabel}
+            onChange={(event) => onSaveLabelChange(event.target.value)}
+            placeholder="Planificación 2026"
+          />
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
@@ -52,10 +73,22 @@ function ResultsPanel({ computation, onExportPdf, onSaveSimulation, isSaved }: R
             <FileDown className="h-4 w-4" />
             {acciones.exportarPdf}
           </Button>
+          <Button onClick={onExportJson} variant="outline" className="w-full sm:w-auto">
+            JSON
+          </Button>
           <Button onClick={onSaveSimulation} variant="outline" className="w-full sm:w-auto">
             {isSaved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
             {isSaved ? acciones.guardado : acciones.guardarSimulacion}
           </Button>
+        </div>
+
+        <div className="space-y-2 rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-600 dark:border-slate-700 dark:text-slate-300">
+          <p className="font-semibold">{panelResultados.supuestos}</p>
+          <ul className="list-disc pl-4">
+            {computation.assumptions.map((assumption) => (
+              <li key={assumption}>{assumption}</li>
+            ))}
+          </ul>
         </div>
       </CardContent>
     </Card>
