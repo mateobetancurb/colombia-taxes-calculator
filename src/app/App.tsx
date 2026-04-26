@@ -66,7 +66,8 @@ function App() {
     const initialInputs = createInitialCalculatorInputs();
     return (Object.keys(calculatorInputs) as CalculatorId[]).some(
       (calculatorId) =>
-        JSON.stringify(calculatorInputs[calculatorId]) !== JSON.stringify(initialInputs[calculatorId]),
+        JSON.stringify(calculatorInputs[calculatorId]) !==
+        JSON.stringify(initialInputs[calculatorId]),
     );
   }, [calculatorInputs]);
 
@@ -403,7 +404,9 @@ function App() {
         >
           <Card className="w-full max-w-md" onClick={(event) => event.stopPropagation()}>
             <CardHeader>
-              <CardTitle id="clear-history-title">{esApp.confirmarEliminarHistorialTitulo}</CardTitle>
+              <CardTitle id="clear-history-title">
+                {esApp.confirmarEliminarHistorialTitulo}
+              </CardTitle>
               <CardDescription id="clear-history-description">
                 {esApp.confirmarEliminarHistorialDescripcion}
               </CardDescription>
@@ -436,7 +439,9 @@ function App() {
         >
           <Card className="w-full max-w-md" onClick={(event) => event.stopPropagation()}>
             <CardHeader>
-              <CardTitle id="reset-simulation-title">{esApp.confirmarReiniciarSimulacionTitulo}</CardTitle>
+              <CardTitle id="reset-simulation-title">
+                {esApp.confirmarReiniciarSimulacionTitulo}
+              </CardTitle>
               <CardDescription id="reset-simulation-description">
                 {esApp.confirmarReiniciarSimulacionDescripcion}
               </CardDescription>

@@ -25,7 +25,8 @@ function SummaryCards({ computation }: SummaryCardsProps) {
       {
         title: computation.socialSecurityLabel,
         value: computation.socialSecurityAmount,
-        valueFormat: computation.calculatorId === "vehicleConsumptionTax" ? "percentage" : "currency",
+        valueFormat:
+          computation.calculatorId === "vehicleConsumptionTax" ? "percentage" : "currency",
         icon: ShieldCheck,
       },
       {
