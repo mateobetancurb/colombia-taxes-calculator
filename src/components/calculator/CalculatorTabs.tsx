@@ -26,7 +26,10 @@ function CalculatorTabs({
   onCalculatorChange,
   onInputChange,
 }: CalculatorTabsProps) {
-  const activeCalculator = useMemo(() => getCalculatorById(activeCalculatorId), [activeCalculatorId]);
+  const activeCalculator = useMemo(
+    () => getCalculatorById(activeCalculatorId),
+    [activeCalculatorId],
+  );
   const inputState = calculatorInputs[activeCalculator.id];
 
   const updateNumberField = (fieldId: string, value: string) => {
@@ -76,7 +79,9 @@ function CalculatorTabs({
           </TabsList>
 
           <TabsContent value={activeCalculator.id} className="space-y-4 pt-4">
-            <p className="text-sm text-slate-500 dark:text-slate-400">{activeCalculator.description}</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              {activeCalculator.description}
+            </p>
             <div className="grid gap-4 md:grid-cols-2">
               {activeCalculator.numberFields.map((field) => (
                 <div key={field.id} className="space-y-2">
@@ -89,7 +94,9 @@ function CalculatorTabs({
                     onChange={(event) => updateNumberField(field.id, event.target.value)}
                   />
                   {field.description ? (
-                    <p className="text-xs text-slate-500 dark:text-slate-400">{field.description}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      {field.description}
+                    </p>
                   ) : null}
                 </div>
               ))}
