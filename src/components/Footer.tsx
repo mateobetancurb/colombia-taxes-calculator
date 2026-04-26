@@ -18,10 +18,21 @@ function Footer() {
         </a>{" "}
         © {currentYear}
       </p>
+      <p className="mt-1">
+        Proyecto open source. Contribuye en{" "}
+        <a
+          href="https://github.com/mateobetancurb/colombia-taxes-calculator"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          GitHub
+        </a>
+        .
+      </p>
     </footer>
   );
 }
 
 const MemoizedFooter = memo(Footer);
-
 export { MemoizedFooter as Footer };
