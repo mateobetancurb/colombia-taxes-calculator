@@ -143,22 +143,22 @@ function calculateWithholdingAdvanced(
 
   return buildResult(definition, {
     referenceAmount: grossIncome,
-    primaryTaxLabel: "Retención estimada",
+    primaryTaxLabel: "Retención proyectada",
     primaryTaxAmount: retention,
-    socialSecurityLabel: "Salud y pensión",
+    socialSecurityLabel: "Aportes a seguridad social",
     socialSecurityAmount: socialSecurity,
-    netLabel: "Ingreso neto mensual",
+    netLabel: "Ingreso neto proyectado",
     netAmount: netIncome,
-    taxableBaseLabel: "Base depurada",
+    taxableBaseLabel: "Base depurada para retención",
     taxableBaseAmount: taxableBase,
     baseUvtLabel: "Base en UVT",
     baseUVT,
     formula:
-      "Base depurada = ingreso - salud - pensión - medicina prepagada - dependientes - 25% renta exenta",
+      "Base depurada = ingreso bruto - aportes - deducciones permitidas - renta exenta del 25%.",
     assumptions: [
-      "Modelo práctico para planeación personal 2026.",
-      "Se utiliza UVT 2026 de COP 52.374.",
-      "El cálculo aplica una tasa de retención lineal para simplificar la simulación.",
+      "Simulación de referencia para planificación financiera 2026.",
+      "Se usa UVT 2026 de COP 52.374 como base de cálculo.",
+      "El modelo simplifica la retención para comparar escenarios de forma rápida.",
     ],
     metrics: [
       { key: "grossIncome", label: "Ingreso bruto", amount: grossIncome },
@@ -188,21 +188,21 @@ function calculateProcedureComparison(
 
   return buildResult(definition, {
     referenceAmount: averageIncome,
-    primaryTaxLabel: "Retención recomendada",
+    primaryTaxLabel: "Retención mensual sugerida",
     primaryTaxAmount: Math.min(proc1AverageRetention, proc2.retention),
-    socialSecurityLabel: "Ahorro anual potencial",
+    socialSecurityLabel: "Ahorro anual estimado",
     socialSecurityAmount: annualSavings,
-    netLabel: "Método sugerido",
+    netLabel: "Ingreso neto estimado",
     netAmount: Math.max(averageIncome - Math.min(proc1AverageRetention, proc2.retention), 0),
     taxableBaseLabel: "Base fija Proc. 2",
     taxableBaseAmount: fixedBase,
     baseUvtLabel: "Base fija en UVT",
     baseUVT: proc2.baseUVT,
-    formula: `Proc. 1 mensual promedio: ${proc1AverageRetention.toFixed(0)} COP | Proc. 2 mensual: ${proc2.retention.toFixed(0)} COP`,
+    formula: `Promedio Proc. 1: ${proc1AverageRetention.toFixed(0)} COP al mes | Proc. 2: ${proc2.retention.toFixed(0)} COP al mes.`,
     assumptions: [
-      `Variabilidad usada: ${(variability * 100).toFixed(0)}%.`,
-      `Recomendación práctica: ${recommended}.`,
-      "El comparador no reemplaza un concepto tributario formal.",
+      `Variabilidad mensual modelada: ${(variability * 100).toFixed(0)}%.`,
+      `Recomendación de conveniencia: ${recommended}.`,
+      "Este comparador no reemplaza una asesoría tributaria formal.",
     ],
     metrics: [
       {
@@ -222,7 +222,7 @@ function calculateProcedureComparison(
       },
       {
         key: "recommendedMonthly",
-        label: "Retención sugerida",
+        label: "Retención sugerida al mes",
         amount: Math.min(proc1AverageRetention, proc2.retention),
       },
     ],
@@ -240,20 +240,20 @@ function calculateVehicleTax(
 
   return buildResult(definition, {
     referenceAmount: vehicleValue,
-    primaryTaxLabel: "Impuesto al consumo",
+    primaryTaxLabel: "Impuesto al consumo estimado",
     primaryTaxAmount: tax,
-    socialSecurityLabel: "Tarifa aplicada",
+    socialSecurityLabel: "Tarifa seleccionada",
     socialSecurityAmount: selectedTariff * 100,
-    netLabel: "Costo total estimado",
+    netLabel: "Costo total proyectado",
     netAmount: totalPurchase,
-    taxableBaseLabel: "Base del impuesto",
+    taxableBaseLabel: "Valor base gravable",
     taxableBaseAmount: vehicleValue,
     baseUvtLabel: "Base en UVT",
     baseUVT: vehicleValue / UVT_2026,
-    formula: "Impuesto al consumo = valor comercial × tarifa seleccionada (8% o 19%)",
+    formula: "Impuesto al consumo = valor comercial x tarifa seleccionada (8% o 19%).",
     assumptions: [
-      "Simulación útil para validar cambios por reformas o decretos de emergencia económica.",
-      "Para motos de más de 200cc puedes contrastar ambos escenarios de tarifa.",
+      "Escenario práctico para evaluar impacto de cambios normativos.",
+      "Para motos de más de 200cc puedes contrastar ambos porcentajes de tarifa.",
     ],
     metrics: [
       { key: "vehicleValue", label: "Valor del vehículo", amount: vehicleValue },
@@ -261,7 +261,7 @@ function calculateVehicleTax(
       { key: "totalPurchase", label: "Costo total", amount: totalPurchase },
       {
         key: "taxWeight",
-        label: "Participación del impuesto",
+        label: "Participación del impuesto en el total",
         amount: safeRatio(tax, totalPurchase) * totalPurchase,
       },
     ],
@@ -288,20 +288,20 @@ function calculateWealthTax(
 
   return buildResult(definition, {
     referenceAmount: netWorth,
-    primaryTaxLabel: "Impuesto al patrimonio",
+    primaryTaxLabel: "Impuesto al patrimonio estimado",
     primaryTaxAmount: tax,
-    socialSecurityLabel: "Umbral exento",
+    socialSecurityLabel: "Umbral exento de referencia",
     socialSecurityAmount: thresholdAmount,
-    netLabel: "Patrimonio luego del impuesto",
+    netLabel: "Patrimonio proyectado después del impuesto",
     netAmount: postTaxWorth,
-    taxableBaseLabel: "Base gravable patrimonio",
+    taxableBaseLabel: "Base gravable del patrimonio",
     taxableBaseAmount: taxableAmount,
     baseUvtLabel: "Base gravable en UVT",
     baseUVT: taxableUVT,
-    formula: "Modelo progresivo práctico desde 72.000 UVT con tres tramos de tarifa.",
+    formula: "Modelo progresivo desde 72.000 UVT con tres tramos de tarifa.",
     assumptions: [
-      "Esta herramienta proyecta escenarios para perfiles de inversión.",
-      "La liquidación oficial depende de la reglamentación y del soporte patrimonial.",
+      "Herramienta diseñada para proyectar escenarios patrimoniales.",
+      "La liquidación oficial depende de la reglamentación vigente y sus soportes.",
     ],
     metrics: [
       { key: "netWorth", label: "Patrimonio líquido", amount: netWorth },
@@ -329,9 +329,9 @@ function calculateServiceExport(
 
   return buildResult(definition, {
     referenceAmount: totalIncome,
-    primaryTaxLabel: "Retención neta estimada",
+    primaryTaxLabel: "Impuesto neto estimado",
     primaryTaxAmount: netTax,
-    socialSecurityLabel: "Retención exterior acreditable",
+    socialSecurityLabel: "Retención exterior descontable",
     socialSecurityAmount: foreignWithholding,
     netLabel: "Ingreso neto proyectado",
     netAmount: netIncome,
@@ -343,7 +343,7 @@ function calculateServiceExport(
       "Base renta = ingresos totales - costos deducibles; impuesto estimado menos retención exterior.",
     assumptions: [
       "Se asume exención de IVA para exportación de servicios de software.",
-      "El efecto de retención exterior se modela como descuento del impuesto estimado.",
+      "La retención en el exterior se descuenta del impuesto estimado local.",
     ],
     metrics: [
       { key: "exportIncome", label: "Ingresos del exterior", amount: exportIncome },
@@ -366,9 +366,9 @@ function calculateInvoiceDeduction(
 
   return buildResult(definition, {
     referenceAmount: annualPurchases,
-    primaryTaxLabel: "Beneficio fiscal estimado",
+    primaryTaxLabel: "Ahorro fiscal estimado",
     primaryTaxAmount: taxBenefit,
-    socialSecurityLabel: "Deducción aplicable (5%)",
+    socialSecurityLabel: "Deducción aplicable del 5%",
     socialSecurityAmount: deduction,
     netLabel: "Costo neto después del beneficio",
     netAmount: effectiveCost,
@@ -376,10 +376,10 @@ function calculateInvoiceDeduction(
     taxableBaseAmount: annualPurchases,
     baseUvtLabel: "Compras en UVT",
     baseUVT: annualPurchases / UVT_2026,
-    formula: "Beneficio = compras con factura electrónica × 5% × tasa efectiva de renta estimada.",
+    formula: "Ahorro fiscal = compras con factura electrónica x 5% x tasa efectiva de renta.",
     assumptions: [
-      "Beneficio transitorio para año fiscal 2026.",
-      "La tasa efectiva de renta es un parámetro configurable del usuario.",
+      "Beneficio transitorio para el año fiscal 2026.",
+      "La tasa efectiva de renta es un parámetro editable por el usuario.",
     ],
     metrics: [
       { key: "annualPurchases", label: "Compras soportadas", amount: annualPurchases },
@@ -405,20 +405,20 @@ function calculateIndependentSocialSecurity(
 
   return buildResult(definition, {
     referenceAmount: grossIncome,
-    primaryTaxLabel: "Aportes totales",
+    primaryTaxLabel: "Aportes totales estimados",
     primaryTaxAmount: total,
     socialSecurityLabel: "IBC (40%)",
     socialSecurityAmount: ibc,
-    netLabel: "Ingreso neto mensual",
+    netLabel: "Ingreso neto proyectado",
     netAmount: net,
     taxableBaseLabel: "ARL mensual",
     taxableBaseAmount: arl,
     baseUvtLabel: "IBC en UVT",
     baseUVT: ibc / UVT_2026,
-    formula: "IBC = ingreso mensual × 40%; aportes = salud + pensión + ARL según riesgo.",
+    formula: "IBC = ingreso mensual x 40%; aportes = salud + pensión + ARL según nivel de riesgo.",
     assumptions: [
-      "Modelo de proyección mensual para independientes.",
-      "Las tarifas de ARL se aproximan por clase de riesgo 1 a 5.",
+      "Modelo mensual de referencia para trabajadores independientes.",
+      "Las tarifas de ARL se aproximan por clase de riesgo de I a V.",
     ],
     metrics: [
       { key: "health", label: "Salud", amount: health },
@@ -432,8 +432,8 @@ function calculateIndependentSocialSecurity(
 export const calculatorDefinitions: CalculatorDefinition[] = [
   {
     id: "withholdingAdvanced",
-    title: "Simulador de retención en la fuente 2026",
-    description: "Depura la base para salarios u honorarios con UVT 2026.",
+    title: "Retención en la fuente 2026",
+    description: "Depura tu base gravable y proyecta la retención mensual con UVT 2026.",
     category: "advanced",
     numberFields: [
       { id: "grossIncome", label: "Ingreso bruto mensual", defaultValue: 0 },
@@ -458,7 +458,7 @@ export const calculatorDefinitions: CalculatorDefinition[] = [
   {
     id: "withholdingProcedureCompare",
     title: "Comparador de procedimientos de retención",
-    description: "Compara Procedimiento 1 y Procedimiento 2 según variabilidad.",
+    description: "Compara Procedimiento 1 vs Procedimiento 2 según variabilidad mensual.",
     category: "advanced",
     numberFields: [
       { id: "averageIncome", label: "Ingreso mensual promedio", defaultValue: 0 },
@@ -473,7 +473,7 @@ export const calculatorDefinitions: CalculatorDefinition[] = [
   {
     id: "vehicleConsumptionTax",
     title: "Impuesto al consumo para vehículos",
-    description: "Valida impacto del 8% o 19% para motos y vehículos.",
+    description: "Simula el impacto de tarifa del 8% o 19% en la compra de vehículos.",
     category: "advanced",
     numberFields: [{ id: "vehicleValue", label: "Valor comercial", defaultValue: 0 }],
     selectFields: [
@@ -500,15 +500,15 @@ export const calculatorDefinitions: CalculatorDefinition[] = [
   },
   {
     id: "wealthTax",
-    title: "Simulador de impuesto al patrimonio",
-    description: "Proyecta impuesto con umbral inicial en 72.000 UVT.",
+    title: "Impuesto al patrimonio",
+    description: "Proyecta el impuesto aplicable desde el umbral de 72.000 UVT.",
     category: "advanced",
     numberFields: [{ id: "netWorth", label: "Patrimonio líquido", defaultValue: 0 }],
   },
   {
     id: "serviceExport",
-    title: "Optimización para exportación de servicios",
-    description: "Modela exención de IVA y efecto de retención exterior.",
+    title: "Exportación de servicios",
+    description: "Modela exención de IVA y retención exterior para proyectar carga fiscal neta.",
     category: "independent",
     numberFields: [
       { id: "exportIncome", label: "Ingresos mensuales del exterior", defaultValue: 0 },
@@ -524,7 +524,7 @@ export const calculatorDefinitions: CalculatorDefinition[] = [
   {
     id: "invoiceDeduction",
     title: "Deducción por factura electrónica",
-    description: "Calcula beneficio transitorio de deducción 5% en renta (2026).",
+    description: "Calcula el ahorro fiscal estimado por deducción del 5% en renta (2026).",
     category: "independent",
     numberFields: [
       { id: "annualPurchases", label: "Compras anuales con factura electrónica", defaultValue: 0 },
@@ -534,7 +534,7 @@ export const calculatorDefinitions: CalculatorDefinition[] = [
   {
     id: "independentSocialSecurity",
     title: "Seguridad social para independientes",
-    description: "Calcula IBC al 40% y aportes de salud, pensión y ARL.",
+    description: "Calcula IBC al 40% y proyecta aportes de salud, pensión y ARL.",
     category: "independent",
     numberFields: [{ id: "monthlyGrossIncome", label: "Ingreso bruto mensual", defaultValue: 0 }],
     selectFields: [

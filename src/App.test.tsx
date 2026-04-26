@@ -10,10 +10,10 @@ describe("App integration", () => {
   it("saves a simulation in local history and restores it", async () => {
     render(<App />);
 
-    const saveNameInput = screen.getByLabelText("Nombre del perfil");
+    const saveNameInput = screen.getByLabelText("Nombre del escenario");
     fireEvent.change(saveNameInput, { target: { value: "Plan QA 2026" } });
 
-    const saveButton = screen.getAllByText("Guardar simulación")[0];
+    const saveButton = screen.getAllByText("Guardar en historial")[0];
     fireEvent.click(saveButton);
 
     expect(await screen.findByText("Plan QA 2026")).toBeInTheDocument();
@@ -21,7 +21,7 @@ describe("App integration", () => {
     const restoreButton = screen.getByRole("button", { name: "Restaurar" });
     fireEvent.click(restoreButton);
 
-    expect(screen.getByLabelText("Nombre del perfil")).toHaveValue("Plan QA 2026");
+    expect(screen.getByLabelText("Nombre del escenario")).toHaveValue("Plan QA 2026");
   });
 
   it("exports results as json", () => {
@@ -32,7 +32,7 @@ describe("App integration", () => {
       .mockImplementation(() => undefined);
 
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "JSON" }));
+    fireEvent.click(screen.getByRole("button", { name: "Descargar JSON" }));
 
     expect(objectUrlSpy).toHaveBeenCalledTimes(1);
     expect(clickSpy).toHaveBeenCalledTimes(1);

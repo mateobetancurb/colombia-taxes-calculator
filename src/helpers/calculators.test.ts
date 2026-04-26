@@ -48,7 +48,7 @@ describe("calculator engines", () => {
     const savings = result.metrics.find((metric) => metric.key === "annualSavings");
     expect(savings).toBeDefined();
     expect(savings?.amount).toBeGreaterThanOrEqual(0);
-    expect(result.assumptions.join(" ")).toContain("Recomendación práctica");
+    expect(result.assumptions.join(" ")).toContain("Recomendación de conveniencia");
   });
 
   it("computes independent social security with ARL risk level", () => {
