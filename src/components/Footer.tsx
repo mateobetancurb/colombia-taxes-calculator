@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { piePagina } from "../locales/es";
 
 const currentYear = new Date().getFullYear();
 
@@ -6,7 +7,7 @@ function Footer() {
   return (
     <footer className="mt-auto w-full py-3 text-center text-sm">
       <p>
-        Desarrollado por{" "}
+        {piePagina.desarrolladoPor}{" "}
         <a
           href="https://www.linkedin.com/in/mateobetancurb"
           target="_blank"

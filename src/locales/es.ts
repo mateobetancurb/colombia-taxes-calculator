@@ -1,58 +1,63 @@
 export const acciones = {
-  exportarPdf: "Exportar PDF",
-  guardarSimulacion: "Guardar simulación",
+  exportarPdf: "Descargar PDF",
+  exportarJson: "Descargar JSON",
+  guardarSimulacion: "Guardar en historial",
   guardado: "Guardado",
 } as const;
 
 export const navegacion = {
   principal: "Navegación principal",
-  panel: "Panel",
+  panel: "Panorama",
   calculadora: "Calculadora",
   resultados: "Resultados",
   historial: "Historial",
 } as const;
 
 export const encabezado = {
-  abrirMenu: "Abrir menú de navegación",
-  alternarTema: "Cambiar modo oscuro",
+  abrirMenu: "Abrir menú principal",
+  alternarTema: "Alternar tema claro u oscuro",
   etiquetaUvt: "UVT 2026",
 } as const;
 
 export const barraLateral = {
-  subtitulo: "TaxFlow 2026",
-  titulo: "Calculadora de impuestos en Colombia",
-  descripcion: "Calcula 4x1000, retención en la fuente, IVA y aportes en un solo lugar.",
+  subtitulo: "TaxFlow Colombia 2026",
+  titulo: "Simulador tributario para Colombia",
+  descripcion:
+    "Proyecta retención, aportes, IVA e impuestos clave en minutos para tomar decisiones con más claridad.",
 } as const;
 
 export const app = {
-  seccionPanel: "Panel",
-  vistaFinanciera: "Calculadora de impuestos y otras funcionalidades",
+  seccionPanel: "Panorama financiero",
+  vistaFinanciera: "Planifica tus impuestos con escenarios claros",
   vistaFinancieraDescripcion:
-    "Este sitio te ayuda a simular impuestos en Colombia para estimar retención, aportes y tu ingreso neto mensual. Aquí también puedes encontrar una calculadora donde podrás simular el pago del IVA, retenciones, impuestos y otros escenarios tributarios para comparar resultados y guardar simulaciones.",
-  seccionCalculadora: "Calculadora de impuestos",
-  seccionResultados: "Resultados tributarios",
+    "Compara escenarios tributarios 2026 para estimar retenciones, aportes y flujo neto sin hojas de cálculo complejas. Elige un módulo, ajusta valores en COP y guarda tus simulaciones para revisarlas después.",
+  seccionCalculadora: "Módulos de simulación",
+  seccionResultados: "Resultado del escenario",
   seccionHistorial: "Historial de simulaciones",
-  contextoPerfil: "Contexto del perfil",
-  contextoPerfilDescripcion: "Resumen rápido de la simulación actual.",
-  calculadoraActiva: "Calculadora activa",
+  contextoPerfil: "Contexto del escenario",
+  contextoPerfilDescripcion: "Resumen rápido para validar tu simulación actual.",
+  calculadoraActiva: "Módulo activo",
+  cargandoGrafico: "Cargando visualización...",
+  nombreCalculadora: "Nombre del escenario",
+  nombreCalculadoraPlaceholder: "Escenario abril 2026",
   disclaimerContador:
-    "Usa el simulador como orientación y valida la declaración final con tu contador.",
+    "Este simulador es informativo. Antes de declarar, valida el resultado con tu contador o asesor tributario.",
   historialTitulo: "Historial local",
-  historialDescripcion: "Guarda y recupera perfiles sin crear base de datos.",
-  historialVacio: "No hay simulaciones guardadas por ahora.",
+  historialDescripcion: "Guarda y recupera escenarios sin crear una base de datos.",
+  historialVacio: "Aún no tienes simulaciones guardadas.",
   restaurar: "Restaurar",
   eliminar: "Eliminar",
 } as const;
 
 export const calculadora = {
-  titulo: "Calculadora de impuestos",
-  descripcion: "Selecciona un módulo tributario 2026 e ingresa valores en COP.",
+  titulo: "Calculadora tributaria",
+  descripcion: "Selecciona un módulo 2026 e ingresa valores en COP para simular tu escenario.",
 } as const;
 
 export const panelResultados = {
-  titulo: "Resultados",
-  descripcion: "Desglose de la simulación del módulo activo.",
-  formula: "Fórmula aplicada",
+  titulo: "Resultado",
+  descripcion: "Desglose del módulo activo con supuestos y cifras clave.",
+  formula: "Método de cálculo",
   baseGravable: "Base gravable",
   baseUvt: "Base en UVT",
   supuestos: "Supuestos y notas",
@@ -67,12 +72,16 @@ export const resumen = {
 
 export const grafico = {
   titulo: "Distribución y comparativo",
-  descripcion: "Visualiza componentes principales y balance impuestos vs disponible.",
+  descripcion: "Visualiza el peso de cada componente y compara impuestos frente al disponible.",
   ingresoDisponible: "Ingreso disponible",
   impuestos: "Impuestos y aportes",
   rentaExentaYDeducciones: "Renta exenta y deducciones",
   retencion: "Retención en la fuente",
   seguridadSocial: "Seguridad social",
+} as const;
+
+export const piePagina = {
+  desarrolladoPor: "Creado por",
 } as const;
 
 const dateLabelFormatter = new Intl.DateTimeFormat("es-CO", {

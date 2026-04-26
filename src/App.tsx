@@ -52,7 +52,7 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [savedSimulations, setSavedSimulations] = useState<SavedSimulation[]>([]);
-  const [saveLabel, setSaveLabel] = useState<string>("Planificación 2026");
+  const [saveLabel, setSaveLabel] = useState<string>(esApp.nombreCalculadoraPlaceholder);
   const { calculatorInputs, computation } = calculatorRuntimeState;
 
   useEffect(() => {
@@ -178,7 +178,7 @@ function App() {
                 fallback={
                   <Card className="h-full">
                     <CardContent className="h-[280px] pt-6 text-sm text-slate-500 dark:text-slate-400">
-                      Cargando gráfico...
+                      {esApp.cargandoGrafico}
                     </CardContent>
                   </Card>
                 }

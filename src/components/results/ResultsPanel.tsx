@@ -4,7 +4,7 @@ import type { CalculationResult } from "../../helpers/calculators";
 import { formatCopCurrency, formatNumber } from "../../helpers";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { acciones, panelResultados } from "../../locales/es";
+import { acciones, app, panelResultados } from "../../locales/es";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
@@ -60,12 +60,12 @@ function ResultsPanel({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="saveLabel">Nombre del perfil</Label>
+          <Label htmlFor="saveLabel">{app.nombreCalculadora}</Label>
           <Input
             id="saveLabel"
             value={saveLabel}
             onChange={(event) => onSaveLabelChange(event.target.value)}
-            placeholder="Planificación 2026"
+            placeholder={app.nombreCalculadoraPlaceholder}
           />
         </div>
 
@@ -75,7 +75,7 @@ function ResultsPanel({
             {acciones.exportarPdf}
           </Button>
           <Button onClick={onExportJson} variant="outline" className="w-full sm:w-auto">
-            JSON
+            {acciones.exportarJson}
           </Button>
           <Button onClick={onSaveSimulation} variant="outline" className="w-full sm:w-auto">
             {isSaved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
