@@ -81,6 +81,8 @@ export const resumen = {
   retencion: "Retención en la fuente",
   seguridadSocial: "Seguridad social",
   ingresoNeto: "Ingreso neto",
+  copiarValor: "Copiar",
+  copiado: "Copiado",
 } as const;
 
 export const grafico = {
