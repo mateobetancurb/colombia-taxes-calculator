@@ -3,7 +3,7 @@ import {
   calculateForCalculator,
   createInitialCalculatorInputs,
   type CalculatorId,
-} from "./calculators";
+} from "@/domain/tax/calculators";
 
 function runCalculator(
   calculatorId: CalculatorId,

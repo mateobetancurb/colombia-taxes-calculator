@@ -1,8 +1,9 @@
 import { memo } from "react";
 import { Menu, Moon, Sun } from "lucide-react";
-import { Button } from "../ui/button";
-import { UVT_2026, formatCopCurrency } from "../../helpers";
-import { encabezado } from "../../locales/es";
+import { Button } from "@/components/ui/button";
+import { UVT_2026 } from "@/domain/tax/constants";
+import { encabezado } from "@/i18n/es";
+import { formatCopCurrency } from "@/utils/formatters";
 
 interface HeaderProps {
   isDark: boolean;

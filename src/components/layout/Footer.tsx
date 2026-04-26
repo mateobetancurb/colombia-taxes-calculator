@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { piePagina } from "../locales/es";
+import { piePagina } from "@/i18n/es";
 
 const currentYear = new Date().getFullYear();
 

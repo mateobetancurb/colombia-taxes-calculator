@@ -11,10 +11,10 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import type { CalculationResult } from "../../helpers/calculators";
-import { formatCopCurrency } from "../../helpers";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { grafico } from "../../locales/es";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import type { CalculationResult } from "@/domain/tax/calculators";
+import { grafico } from "@/i18n/es";
+import { formatCopCurrency } from "@/utils/formatters";
 
 interface IncomeDonutChartProps {
   computation: CalculationResult;

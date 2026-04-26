@@ -1,4 +1,8 @@
-import type { CalculationResult, CalculatorId, CalculatorInputState } from "../helpers/calculators";
+import type {
+  CalculationResult,
+  CalculatorId,
+  CalculatorInputState,
+} from "@/domain/tax/calculators";
 
 const STORAGE_KEY = "taxflow_simulations_v2";
 const MAX_ITEMS = 25;

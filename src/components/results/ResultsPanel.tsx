@@ -1,12 +1,12 @@
 import { memo } from "react";
 import { Check, FileDown, Save } from "lucide-react";
-import type { CalculationResult } from "../../helpers/calculators";
-import { formatCopCurrency, formatNumber } from "../../helpers";
-import { Button } from "../ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { acciones, app, panelResultados } from "../../locales/es";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { CalculationResult } from "@/domain/tax/calculators";
+import { acciones, app, panelResultados } from "@/i18n/es";
+import { formatCopCurrency, formatNumber } from "@/utils/formatters";
 
 interface ResultsPanelProps {
   computation: CalculationResult;
