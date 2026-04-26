@@ -1,6 +1,15 @@
-import { memo, useMemo } from "react";
-import { AlertTriangle, BadgeDollarSign, Landmark, PiggyBank, ShieldCheck } from "lucide-react";
+import { memo, useCallback, useMemo, useState } from "react";
+import {
+  AlertTriangle,
+  BadgeDollarSign,
+  Check,
+  Copy,
+  Landmark,
+  PiggyBank,
+  ShieldCheck,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import type { CalculationResult } from "@/domain/tax/calculators";
 import { app, resumen } from "@/i18n/es";
 import { formatCopCurrency, formatPercentageValue } from "@/utils/formatters";
@@ -9,8 +18,16 @@ interface SummaryCardsProps {
   computation: CalculationResult;
 }
 
+type SummaryCardItem = {
+  title: string;
+  value: number;
+  valueFormat?: "percentage" | "currency";
+  icon: typeof BadgeDollarSign;
+};
+
 function SummaryCards({ computation }: SummaryCardsProps) {
-  const cards = useMemo(
+  const [copiedCardTitle, setCopiedCardTitle] = useState<string | null>(null);
+  const cards = useMemo<SummaryCardItem[]>(
     () => [
       {
         title: resumen.baseReferencia,
@@ -46,6 +63,25 @@ function SummaryCards({ computation }: SummaryCardsProps) {
       computation.socialSecurityLabel,
     ],
   );
+  const formatCardValue = useCallback((value: number, valueFormat?: "percentage" | "currency") => {
+    return valueFormat === "percentage" ? formatPercentageValue(value) : formatCopCurrency(value);
+  }, []);
+
+  const handleCopyCardValue = useCallback(
+    async (cardTitle: string, value: number, valueFormat?: "percentage" | "currency") => {
+      try {
+        const formattedValue = formatCardValue(value, valueFormat);
+        await navigator.clipboard.writeText(formattedValue);
+        setCopiedCardTitle(cardTitle);
+        window.setTimeout(() => {
+          setCopiedCardTitle((currentTitle) => (currentTitle === cardTitle ? null : currentTitle));
+        }, 1500);
+      } catch {
+        // Skip visual feedback when clipboard write is unavailable or blocked.
+      }
+    },
+    [formatCardValue],
+  );
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 mb-10">
@@ -64,13 +100,27 @@ function SummaryCards({ computation }: SummaryCardsProps) {
             <CardTitle className="text-sm font-medium text-slate-500 dark:text-slate-400">
               {card.title}
             </CardTitle>
-            <card.icon className="h-4 w-4 text-emerald-500" />
+            <div className="flex items-center gap-1">
+              <card.icon className="h-4 w-4 text-emerald-500" />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7"
+                onClick={() => handleCopyCardValue(card.title, card.value, card.valueFormat)}
+                aria-label={`${resumen.copiarValor}: ${card.title}`}
+              >
+                {copiedCardTitle === card.title ? (
+                  <Check className="h-3.5 w-3.5" aria-hidden />
+                ) : (
+                  <Copy className="h-3.5 w-3.5" aria-hidden />
+                )}
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-semibold tracking-tight">
-              {card.valueFormat === "percentage"
-                ? formatPercentageValue(card.value)
-                : formatCopCurrency(card.value)}
+              {formatCardValue(card.value, card.valueFormat)}
             </p>
           </CardContent>
         </Card>
