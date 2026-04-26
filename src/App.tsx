@@ -188,6 +188,7 @@ function App() {
             </section>
 
             <section>
+              <h2 className="text-2xl font-semibold">{esApp.seccionCalculadora}</h2>
               <CalculatorTabs
                 activeCalculatorId={activeCalculatorId}
                 calculatorInputs={calculatorInputs}
@@ -197,6 +198,7 @@ function App() {
             </section>
 
             <section className="grid gap-6 xl:grid-cols-[1.35fr_1fr]">
+              <h2 className="sr-only">{esApp.seccionResultados}</h2>
               <ResultsPanel
                 computation={computation}
                 onExportPdf={handleExportPdf}
@@ -237,6 +239,7 @@ function App() {
             </section>
 
             <section id="history">
+              <h2 className="sr-only">{esApp.seccionHistorial}</h2>
               <Card>
                 <CardHeader>
                   <CardTitle>{esApp.historialTitulo}</CardTitle>

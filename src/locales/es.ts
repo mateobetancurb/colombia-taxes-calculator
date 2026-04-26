@@ -19,14 +19,17 @@ export const encabezado = {
 } as const;
 
 export const barraLateral = {
-  subtitulo: "TaxFlow",
-  titulo: "TaxFlow 2026",
-  descripcion: "Simulador de impuestos en Colombia",
+  subtitulo: "TaxFlow 2026",
+  titulo: "Calculadora de impuestos en Colombia",
+  descripcion: "Calcula 4x1000, retención en la fuente, IVA y aportes en un solo lugar.",
 } as const;
 
 export const app = {
   seccionPanel: "Panel",
   vistaFinanciera: "Vista general financiera",
+  seccionCalculadora: "Calculadora de impuestos",
+  seccionResultados: "Resultados tributarios",
+  seccionHistorial: "Historial de simulaciones",
   contextoPerfil: "Contexto del perfil",
   contextoPerfilDescripcion: "Resumen rápido de la simulación actual.",
   calculadoraActiva: "Calculadora activa",

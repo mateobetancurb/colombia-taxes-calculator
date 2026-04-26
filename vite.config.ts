@@ -12,9 +12,10 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["calculator-favicon.svg", "robots.txt", "sitemap.xml"],
       manifest: {
-        name: "TaxFlow 2026 - Calculadora de Impuestos Colombia",
-        short_name: "TaxFlow 2026",
-        description: "Simuladores tributarios 2026 para Colombia con modo offline.",
+        name: "Calculadora de impuestos en Colombia | TaxFlow 2026",
+        short_name: "Impuestos CO",
+        description:
+          "Calcula 4x1000, retención en la fuente, IVA y aportes con simuladores tributarios para Colombia.",
         lang: "es",
         start_url: "/",
         scope: "/",
