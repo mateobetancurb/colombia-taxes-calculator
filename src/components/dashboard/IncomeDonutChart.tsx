@@ -83,9 +83,17 @@ function IncomeDonutChart({ computation }: IncomeDonutChartProps) {
         </div>
         <div className="h-[280px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={comparisonData}>
+            <BarChart
+              data={comparisonData}
+              margin={{
+                top: 8,
+                right: 12,
+                left: 20,
+                bottom: 8,
+              }}
+            >
               <XAxis dataKey="name" />
-              <YAxis tickFormatter={formatChartValue} />
+              <YAxis tickFormatter={formatChartValue} width={100} tickMargin={8} />
               <Tooltip formatter={formatChartValue} />
               <Bar dataKey="value" fill="#10b981" radius={[6, 6, 0, 0]} />
             </BarChart>
