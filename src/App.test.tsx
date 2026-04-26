@@ -27,7 +27,9 @@ describe("App integration", () => {
   it("exports results as json", () => {
     const objectUrlSpy = vi.spyOn(URL, "createObjectURL").mockReturnValue("blob:mock-url");
     const revokeSpy = vi.spyOn(URL, "revokeObjectURL").mockImplementation(() => undefined);
-    const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => undefined);
+    const clickSpy = vi
+      .spyOn(HTMLAnchorElement.prototype, "click")
+      .mockImplementation(() => undefined);
 
     render(<App />);
     fireEvent.click(screen.getByRole("button", { name: "JSON" }));

@@ -153,7 +153,8 @@ function calculateWithholdingAdvanced(
     taxableBaseAmount: taxableBase,
     baseUvtLabel: "Base en UVT",
     baseUVT,
-    formula: "Base depurada = ingreso - salud - pensión - medicina prepagada - dependientes - 25% renta exenta",
+    formula:
+      "Base depurada = ingreso - salud - pensión - medicina prepagada - dependientes - 25% renta exenta",
     assumptions: [
       "Modelo práctico para planeación personal 2026.",
       "Se utiliza UVT 2026 de COP 52.374.",
@@ -181,7 +182,8 @@ function calculateProcedureComparison(
   const proc1High = calculateWithholdingByBase(highMonthIncome);
   const proc1AverageRetention = (proc1Low.retention + proc1High.retention) / 2;
   const proc2 = calculateWithholdingByBase(fixedBase);
-  const recommended = proc1AverageRetention <= proc2.retention ? "Procedimiento 1" : "Procedimiento 2";
+  const recommended =
+    proc1AverageRetention <= proc2.retention ? "Procedimiento 1" : "Procedimiento 2";
   const annualSavings = Math.abs(proc1AverageRetention - proc2.retention) * MONTHS;
 
   return buildResult(definition, {
@@ -337,7 +339,8 @@ function calculateServiceExport(
     taxableBaseAmount: taxableBase,
     baseUvtLabel: "Base en UVT",
     baseUVT: taxableBase / UVT_2026,
-    formula: "Base renta = ingresos totales - costos deducibles; impuesto estimado menos retención exterior.",
+    formula:
+      "Base renta = ingresos totales - costos deducibles; impuesto estimado menos retención exterior.",
     assumptions: [
       "Se asume exención de IVA para exportación de servicios de software.",
       "El efecto de retención exterior se modela como descuento del impuesto estimado.",
@@ -551,12 +554,14 @@ export const calculatorDefinitions: CalculatorDefinition[] = [
 
 export const defaultCalculatorId: CalculatorId = "withholdingAdvanced";
 
-const calculatorMap = Object.fromEntries(calculatorDefinitions.map((item) => [item.id, item])) as Record<
-  CalculatorId,
-  CalculatorDefinition
->;
+const calculatorMap = Object.fromEntries(
+  calculatorDefinitions.map((item) => [item.id, item]),
+) as Record<CalculatorId, CalculatorDefinition>;
 
-type CalculatorResolver = (definition: CalculatorDefinition, input: CalculatorInputState) => CalculationResult;
+type CalculatorResolver = (
+  definition: CalculatorDefinition,
+  input: CalculatorInputState,
+) => CalculationResult;
 
 const calculatorResolvers: Record<CalculatorId, CalculatorResolver> = {
   withholdingAdvanced: calculateWithholdingAdvanced,

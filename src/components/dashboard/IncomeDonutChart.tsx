@@ -1,4 +1,15 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+} from "recharts";
 import type { CalculationResult } from "../../helpers/calculators";
 import { formatCopCurrency } from "../../helpers";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
@@ -16,7 +27,10 @@ function IncomeDonutChart({ computation }: IncomeDonutChartProps) {
     value: Math.max(metric.amount, 0),
   }));
   const comparisonData = [
-    { name: grafico.impuestos, value: Math.max(computation.primaryTaxAmount + computation.socialSecurityAmount, 0) },
+    {
+      name: grafico.impuestos,
+      value: Math.max(computation.primaryTaxAmount + computation.socialSecurityAmount, 0),
+    },
     { name: grafico.ingresoDisponible, value: Math.max(computation.netAmount, 0) },
   ];
 

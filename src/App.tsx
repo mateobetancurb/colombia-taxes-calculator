@@ -28,11 +28,14 @@ import { formatCopCurrency } from "./helpers";
 
 function App() {
   const [activeCalculatorId, setActiveCalculatorId] = useState<CalculatorId>(defaultCalculatorId);
-  const [calculatorInputs, setCalculatorInputs] = useState<Record<CalculatorId, CalculatorInputState>>(
-    createInitialCalculatorInputs(),
-  );
+  const [calculatorInputs, setCalculatorInputs] = useState<
+    Record<CalculatorId, CalculatorInputState>
+  >(createInitialCalculatorInputs());
   const [computation, setComputation] = useState<CalculationResult>(() =>
-    calculateForCalculator(defaultCalculatorId, createInitialCalculatorInputs()[defaultCalculatorId]),
+    calculateForCalculator(
+      defaultCalculatorId,
+      createInitialCalculatorInputs()[defaultCalculatorId],
+    ),
   );
   const [isDark, setIsDark] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
@@ -208,7 +211,8 @@ function App() {
                         <div>
                           <p className="font-semibold">{item.name}</p>
                           <p className="text-xs text-slate-500 dark:text-slate-400">
-                            {getCalculatorById(item.calculatorId).title} - {formatDateLabel(item.createdAt)}
+                            {getCalculatorById(item.calculatorId).title} -{" "}
+                            {formatDateLabel(item.createdAt)}
                           </p>
                         </div>
                         <div className="flex gap-2">
@@ -232,7 +236,9 @@ function App() {
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-slate-500 dark:text-slate-400">{esApp.historialVacio}</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      {esApp.historialVacio}
+                    </p>
                   )}
                 </CardContent>
               </Card>

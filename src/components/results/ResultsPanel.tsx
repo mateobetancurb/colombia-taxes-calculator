@@ -34,12 +34,8 @@ function ResultsPanel({
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900/60">
-          <p className="text-sm text-slate-600 dark:text-slate-300">
-            {panelResultados.formula}
-          </p>
-          <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">
-            {computation.formula}
-          </p>
+          <p className="text-sm text-slate-600 dark:text-slate-300">{panelResultados.formula}</p>
+          <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">{computation.formula}</p>
           <p className="mt-1 text-lg font-semibold text-slate-900 dark:text-slate-100">
             {formatCopCurrency(computation.primaryTaxAmount)}
           </p>
@@ -50,7 +46,9 @@ function ResultsPanel({
             <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
               {computation.taxableBaseLabel}
             </p>
-            <p className="text-lg font-semibold">{formatCopCurrency(computation.taxableBaseAmount)}</p>
+            <p className="text-lg font-semibold">
+              {formatCopCurrency(computation.taxableBaseAmount)}
+            </p>
           </div>
           <div className="rounded-lg border border-slate-200 p-4 dark:border-slate-800">
             <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">

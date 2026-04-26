@@ -30,7 +30,8 @@ export const app = {
   contextoPerfil: "Contexto del perfil",
   contextoPerfilDescripcion: "Resumen rápido de la simulación actual.",
   calculadoraActiva: "Calculadora activa",
-  disclaimerContador: "Usa el simulador como orientación y valida la declaración final con tu contador.",
+  disclaimerContador:
+    "Usa el simulador como orientación y valida la declaración final con tu contador.",
   historialTitulo: "Historial local",
   historialDescripcion: "Guarda y recupera perfiles sin crear base de datos.",
   historialVacio: "No hay simulaciones guardadas por ahora.",

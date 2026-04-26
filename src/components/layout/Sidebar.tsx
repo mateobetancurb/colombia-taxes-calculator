@@ -33,11 +33,15 @@ function Sidebar({ isOpen, onClose, onExportPdf, onSaveSimulation }: SidebarProp
         aria-label={navegacion.principal}
       >
         <div className="mb-10">
-          <p className="text-xs uppercase tracking-[0.15em] text-emerald-600">{barraLateral.subtitulo}</p>
+          <p className="text-xs uppercase tracking-[0.15em] text-emerald-600">
+            {barraLateral.subtitulo}
+          </p>
           <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
             {barraLateral.titulo}
           </h1>
-          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{barraLateral.descripcion}</p>
+          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+            {barraLateral.descripcion}
+          </p>
         </div>
 
         <nav className="space-y-2">

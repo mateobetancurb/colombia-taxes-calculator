@@ -30,7 +30,9 @@ function CalculatorTabs({
   onCalculationChange,
 }: CalculatorTabsProps) {
   const activeCalculator = useMemo(
-    () => calculatorDefinitions.find((item) => item.id === activeCalculatorId) || calculatorDefinitions[0],
+    () =>
+      calculatorDefinitions.find((item) => item.id === activeCalculatorId) ||
+      calculatorDefinitions[0],
     [activeCalculatorId],
   );
 
@@ -72,7 +74,10 @@ function CalculatorTabs({
         <CardDescription>{es.descripcion}</CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs value={activeCalculator.id} onValueChange={(value) => onCalculatorChange(value as CalculatorId)}>
+        <Tabs
+          value={activeCalculator.id}
+          onValueChange={(value) => onCalculatorChange(value as CalculatorId)}
+        >
           <TabsList className="flex h-auto w-full flex-wrap gap-2 bg-transparent p-0">
             {calculatorDefinitions.map((calculator) => (
               <TabsTrigger
@@ -89,7 +94,9 @@ function CalculatorTabs({
             const inputState = calculatorInputs[calculator.id];
             return (
               <TabsContent key={calculator.id} value={calculator.id} className="space-y-4 pt-4">
-                <p className="text-sm text-slate-500 dark:text-slate-400">{calculator.description}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  {calculator.description}
+                </p>
                 <div className="grid gap-4 md:grid-cols-2">
                   {calculator.numberFields.map((field) => (
                     <div key={field.id} className="space-y-2">
@@ -102,7 +109,9 @@ function CalculatorTabs({
                         onChange={(event) => updateNumberField(field.id, event.target.value)}
                       />
                       {field.description ? (
-                        <p className="text-xs text-slate-500 dark:text-slate-400">{field.description}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          {field.description}
+                        </p>
                       ) : null}
                     </div>
                   ))}
