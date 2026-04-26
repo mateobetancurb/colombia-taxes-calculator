@@ -1,4 +1,5 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { AlertTriangle, RotateCcw, Trash2 } from "lucide-react";
 import { CalculatorTabs } from "@/components/calculator/CalculatorTabs";
 import { SummaryCards } from "@/components/dashboard/SummaryCards";
 import { Footer } from "@/components/layout/Footer";
@@ -18,8 +19,12 @@ import {
 } from "@/domain/tax/calculators";
 import { app as esApp, formatDateLabel } from "@/i18n/es";
 import {
+  clearCurrentSimulationDraft,
+  clearSavedSimulations,
   deleteSimulation,
+  readCurrentSimulationDraft,
   readSavedSimulations,
+  saveCurrentSimulationDraft,
   saveSimulation,
   type SavedSimulation,
 } from "@/services/storage/simulation-storage";
@@ -53,13 +58,54 @@ function App() {
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [savedSimulations, setSavedSimulations] = useState<SavedSimulation[]>([]);
   const [saveLabel, setSaveLabel] = useState<string>(esApp.nombreCalculadoraPlaceholder);
+  const [isDraftReady, setIsDraftReady] = useState<boolean>(false);
+  const [isClearHistoryModalOpen, setIsClearHistoryModalOpen] = useState<boolean>(false);
+  const [isResetSimulationModalOpen, setIsResetSimulationModalOpen] = useState<boolean>(false);
   const { calculatorInputs, computation } = calculatorRuntimeState;
+  const hasUserEnteredData = useMemo(() => {
+    const initialInputs = createInitialCalculatorInputs();
+    return (Object.keys(calculatorInputs) as CalculatorId[]).some(
+      (calculatorId) =>
+        JSON.stringify(calculatorInputs[calculatorId]) !== JSON.stringify(initialInputs[calculatorId]),
+    );
+  }, [calculatorInputs]);
 
   useEffect(() => {
     const hasDarkClass = document.documentElement.classList.contains("dark");
     setIsDark(hasDarkClass);
     setSavedSimulations(readSavedSimulations());
+
+    const draft = readCurrentSimulationDraft();
+    if (draft) {
+      const restoredInput = draft.calculatorInputs[draft.activeCalculatorId];
+      if (restoredInput) {
+        setActiveCalculatorId(draft.activeCalculatorId);
+        setCalculatorRuntimeState({
+          calculatorInputs: draft.calculatorInputs,
+          computation: calculateForCalculator(draft.activeCalculatorId, restoredInput),
+        });
+        if (draft.saveLabel.trim()) {
+          setSaveLabel(draft.saveLabel);
+        }
+      } else {
+        clearCurrentSimulationDraft();
+      }
+    }
+
+    setIsDraftReady(true);
   }, []);
+
+  useEffect(() => {
+    if (!isDraftReady) {
+      return;
+    }
+
+    saveCurrentSimulationDraft({
+      activeCalculatorId,
+      calculatorInputs,
+      saveLabel,
+    });
+  }, [activeCalculatorId, calculatorInputs, isDraftReady, saveLabel]);
 
   const handleToggleTheme = useCallback(() => {
     document.documentElement.classList.toggle("dark");
@@ -145,6 +191,28 @@ function App() {
     setSavedSimulations(deleteSimulation(simulationId));
   }, []);
 
+  const handleClearSavedHistory = useCallback(() => {
+    setSavedSimulations(clearSavedSimulations());
+  }, []);
+
+  const handleConfirmClearSavedHistory = useCallback(() => {
+    handleClearSavedHistory();
+    setIsClearHistoryModalOpen(false);
+  }, [handleClearSavedHistory]);
+
+  const handleResetCurrentSimulation = useCallback(() => {
+    setActiveCalculatorId(defaultCalculatorId);
+    setCalculatorRuntimeState(createInitialCalculatorRuntimeState());
+    setSaveLabel(esApp.nombreCalculadoraPlaceholder);
+    setIsSaved(false);
+    clearCurrentSimulationDraft();
+  }, []);
+
+  const handleConfirmResetCurrentSimulation = useCallback(() => {
+    handleResetCurrentSimulation();
+    setIsResetSimulationModalOpen(false);
+  }, [handleResetCurrentSimulation]);
+
   const handleCloseSidebar = useCallback(() => setIsSidebarOpen(false), []);
   const handleOpenSidebar = useCallback(() => setIsSidebarOpen(true), []);
 
@@ -175,7 +243,22 @@ function App() {
               </div>
               <SummaryCards computation={computation} />
               <section>
-                <h2 className="text-2xl font-semibold mb-5">{esApp.seccionCalculadora}</h2>
+                <div className="mb-3 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                  <h2 className="text-2xl font-semibold">{esApp.seccionCalculadora}</h2>
+                  {hasUserEnteredData ? (
+                    <Button
+                      type="button"
+                      variant="warning"
+                      onClick={() => setIsResetSimulationModalOpen(true)}
+                    >
+                      <AlertTriangle className="h-4 w-4" aria-hidden />
+                      {esApp.reiniciarSimulacionActual}
+                    </Button>
+                  ) : null}
+                </div>
+                <p className="mb-5 text-sm text-slate-600 dark:text-slate-300">
+                  {esApp.reiniciarSimulacionActualDescripcion}
+                </p>
                 <CalculatorTabs
                   activeCalculatorId={activeCalculatorId}
                   calculatorInputs={calculatorInputs}
@@ -245,6 +328,19 @@ function App() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {savedSimulations.length ? (
+                    <div className="flex justify-end">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => setIsClearHistoryModalOpen(true)}
+                      >
+                        <Trash2 className="h-4 w-4" aria-hidden />
+                        {esApp.eliminarTodoHistorial}
+                      </Button>
+                    </div>
+                  ) : null}
+                  {savedSimulations.length ? (
                     savedSimulations.map((item) => (
                       <div
                         key={item.id}
@@ -261,17 +357,19 @@ function App() {
                           <Button
                             type="button"
                             size="sm"
-                            variant="outline"
+                            variant="default"
                             onClick={() => handleRestoreSimulation(item)}
                           >
+                            <RotateCcw className="h-4 w-4" aria-hidden />
                             {esApp.restaurar}
                           </Button>
                           <Button
                             type="button"
                             size="sm"
-                            variant="outline"
+                            variant="destructive"
                             onClick={() => handleDeleteSimulation(item.id)}
                           >
+                            <Trash2 className="h-4 w-4" aria-hidden />
                             {esApp.eliminar}
                           </Button>
                         </div>
@@ -291,6 +389,72 @@ function App() {
           </div>
         </div>
       </div>
+
+      {isClearHistoryModalOpen ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="clear-history-title"
+          aria-describedby="clear-history-description"
+          onClick={() => setIsClearHistoryModalOpen(false)}
+        >
+          <Card className="w-full max-w-md" onClick={(event) => event.stopPropagation()}>
+            <CardHeader>
+              <CardTitle id="clear-history-title">{esApp.confirmarEliminarHistorialTitulo}</CardTitle>
+              <CardDescription id="clear-history-description">
+                {esApp.confirmarEliminarHistorialDescripcion}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsClearHistoryModalOpen(false)}
+              >
+                {esApp.cancelar}
+              </Button>
+              <Button type="button" variant="destructive" onClick={handleConfirmClearSavedHistory}>
+                <Trash2 className="h-4 w-4" aria-hidden />
+                {esApp.confirmarEliminar}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      ) : null}
+
+      {isResetSimulationModalOpen ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="reset-simulation-title"
+          aria-describedby="reset-simulation-description"
+          onClick={() => setIsResetSimulationModalOpen(false)}
+        >
+          <Card className="w-full max-w-md" onClick={(event) => event.stopPropagation()}>
+            <CardHeader>
+              <CardTitle id="reset-simulation-title">{esApp.confirmarReiniciarSimulacionTitulo}</CardTitle>
+              <CardDescription id="reset-simulation-description">
+                {esApp.confirmarReiniciarSimulacionDescripcion}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsResetSimulationModalOpen(false)}
+              >
+                {esApp.cancelar}
+              </Button>
+              <Button type="button" variant="warning" onClick={handleConfirmResetCurrentSimulation}>
+                <AlertTriangle className="h-4 w-4" aria-hidden />
+                {esApp.confirmarReiniciar}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import type {
 } from "@/domain/tax/calculators";
 
 const STORAGE_KEY = "taxflow_simulations_v2";
+const DRAFT_STORAGE_KEY = "taxflow_current_simulation_v1";
 const MAX_ITEMS = 25;
 
 export interface SavedSimulation {
@@ -14,6 +15,12 @@ export interface SavedSimulation {
   calculatorId: CalculatorId;
   input: CalculatorInputState;
   result: CalculationResult;
+}
+
+export interface CurrentSimulationDraft {
+  activeCalculatorId: CalculatorId;
+  calculatorInputs: Record<CalculatorId, CalculatorInputState>;
+  saveLabel: string;
 }
 
 function parseStoredValue(rawValue: string | null): SavedSimulation[] {
@@ -29,6 +36,33 @@ function parseStoredValue(rawValue: string | null): SavedSimulation[] {
     return parsed.filter((item) => Boolean(item?.id && item?.calculatorId && item?.result));
   } catch {
     return [];
+  }
+}
+
+function parseCurrentSimulationDraft(rawValue: string | null): CurrentSimulationDraft | null {
+  if (!rawValue) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(rawValue) as Partial<CurrentSimulationDraft>;
+    if (
+      !parsed ||
+      typeof parsed !== "object" ||
+      typeof parsed.activeCalculatorId !== "string" ||
+      !parsed.calculatorInputs ||
+      typeof parsed.calculatorInputs !== "object"
+    ) {
+      return null;
+    }
+
+    return {
+      activeCalculatorId: parsed.activeCalculatorId as CalculatorId,
+      calculatorInputs: parsed.calculatorInputs as Record<CalculatorId, CalculatorInputState>,
+      saveLabel: typeof parsed.saveLabel === "string" ? parsed.saveLabel : "",
+    };
+  } catch {
+    return null;
   }
 }
 
@@ -48,4 +82,21 @@ export function deleteSimulation(simulationId: string): SavedSimulation[] {
   const next = current.filter((item) => item.id !== simulationId);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   return next;
+}
+
+export function clearSavedSimulations(): SavedSimulation[] {
+  localStorage.removeItem(STORAGE_KEY);
+  return [];
+}
+
+export function readCurrentSimulationDraft(): CurrentSimulationDraft | null {
+  return parseCurrentSimulationDraft(localStorage.getItem(DRAFT_STORAGE_KEY));
+}
+
+export function saveCurrentSimulationDraft(draft: CurrentSimulationDraft): void {
+  localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+}
+
+export function clearCurrentSimulationDraft(): void {
+  localStorage.removeItem(DRAFT_STORAGE_KEY);
 }
