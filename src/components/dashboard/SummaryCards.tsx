@@ -2,6 +2,7 @@ import { BadgeDollarSign, Landmark, PiggyBank, ShieldCheck } from "lucide-react"
 import type { TaxComputation } from "../../helpers/tax-calculator";
 import { formatCopCurrency } from "../../helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { resumen } from "../../locales/es";
 
 interface SummaryCardsProps {
   computation: TaxComputation;
@@ -10,22 +11,22 @@ interface SummaryCardsProps {
 function SummaryCards({ computation }: SummaryCardsProps) {
   const cards = [
     {
-      title: "Total Tax",
+      title: resumen.totalImpuestos,
       value: computation.totalTax,
       icon: BadgeDollarSign,
     },
     {
-      title: "Retention",
+      title: resumen.retencion,
       value: computation.retention,
       icon: Landmark,
     },
     {
-      title: "Social Security",
+      title: resumen.seguridadSocial,
       value: computation.socialSecurity,
       icon: ShieldCheck,
     },
     {
-      title: "Net Income",
+      title: resumen.ingresoNeto,
       value: computation.netIncome,
       icon: PiggyBank,
     },

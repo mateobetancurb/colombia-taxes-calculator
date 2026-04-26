@@ -2,6 +2,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recha
 import type { TaxComputation } from "../../helpers/tax-calculator";
 import { formatCopCurrency } from "../../helpers";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { grafico } from "../../locales/es";
 
 interface IncomeDonutChartProps {
   computation: TaxComputation;
@@ -18,19 +19,17 @@ function IncomeDonutChart({ computation }: IncomeDonutChartProps) {
   );
 
   const data = [
-    { name: "Available Income", value: remaining },
-    { name: "Renta Exenta + Deductions", value: deductions },
-    { name: "Retention", value: computation.retention },
-    { name: "Social Security", value: computation.socialSecurity },
+    { name: grafico.ingresoDisponible, value: remaining },
+    { name: grafico.rentaExentaYDeducciones, value: deductions },
+    { name: grafico.retencion, value: computation.retention },
+    { name: grafico.seguridadSocial, value: computation.socialSecurity },
   ];
 
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Income Distribution</CardTitle>
-        <CardDescription>
-          How your monthly gross income is allocated in the simulation.
-        </CardDescription>
+        <CardTitle>{grafico.titulo}</CardTitle>
+        <CardDescription>{grafico.descripcion}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="h-[300px] w-full">
