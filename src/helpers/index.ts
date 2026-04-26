@@ -10,6 +10,8 @@ const copNumberFormatter = new Intl.NumberFormat("es-CO", {
   maximumFractionDigits: 0,
 });
 
+const numberFormatterCache = new Map<number, Intl.NumberFormat>();
+
 export const UVT_2026 = 52374;
 
 export const formatCopCurrency = (value: number) => {
@@ -30,10 +32,15 @@ export const parseCopInput = (value: string) => {
 };
 
 export const formatNumber = (value: number, fractionDigits = 2) => {
-  return new Intl.NumberFormat("es-CO", {
-    minimumFractionDigits: fractionDigits,
-    maximumFractionDigits: fractionDigits,
-  }).format(value);
+  let formatter = numberFormatterCache.get(fractionDigits);
+  if (!formatter) {
+    formatter = new Intl.NumberFormat("es-CO", {
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits,
+    });
+    numberFormatterCache.set(fractionDigits, formatter);
+  }
+  return formatter.format(value);
 };
 
 export const currencyFormat = (value: number | string) => {

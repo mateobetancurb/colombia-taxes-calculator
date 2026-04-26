@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/layout/Header";
 import { Sidebar } from "./components/layout/Sidebar";
 import { SummaryCards } from "./components/dashboard/SummaryCards";
-import { IncomeDonutChart } from "./components/dashboard/IncomeDonutChart";
 import { CalculatorTabs } from "./components/calculator/CalculatorTabs";
 import { ResultsPanel } from "./components/results/ResultsPanel";
 import {
@@ -26,22 +25,35 @@ import {
 import { Button } from "./components/ui/button";
 import { formatCopCurrency } from "./helpers";
 
+const IncomeDonutChart = lazy(async () => {
+  const module = await import("./components/dashboard/IncomeDonutChart");
+  return { default: module.IncomeDonutChart };
+});
+
+interface CalculatorRuntimeState {
+  calculatorInputs: Record<CalculatorId, CalculatorInputState>;
+  computation: CalculationResult;
+}
+
+function createInitialCalculatorRuntimeState(): CalculatorRuntimeState {
+  const initialInputs = createInitialCalculatorInputs();
+  return {
+    calculatorInputs: initialInputs,
+    computation: calculateForCalculator(defaultCalculatorId, initialInputs[defaultCalculatorId]),
+  };
+}
+
 function App() {
   const [activeCalculatorId, setActiveCalculatorId] = useState<CalculatorId>(defaultCalculatorId);
-  const [calculatorInputs, setCalculatorInputs] = useState<
-    Record<CalculatorId, CalculatorInputState>
-  >(createInitialCalculatorInputs());
-  const [computation, setComputation] = useState<CalculationResult>(() =>
-    calculateForCalculator(
-      defaultCalculatorId,
-      createInitialCalculatorInputs()[defaultCalculatorId],
-    ),
+  const [calculatorRuntimeState, setCalculatorRuntimeState] = useState<CalculatorRuntimeState>(
+    createInitialCalculatorRuntimeState,
   );
   const [isDark, setIsDark] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [savedSimulations, setSavedSimulations] = useState<SavedSimulation[]>([]);
   const [saveLabel, setSaveLabel] = useState<string>("Planificación 2026");
+  const { calculatorInputs, computation } = calculatorRuntimeState;
 
   useEffect(() => {
     const hasDarkClass = document.documentElement.classList.contains("dark");
@@ -49,12 +61,12 @@ function App() {
     setSavedSimulations(readSavedSimulations());
   }, []);
 
-  const handleToggleTheme = () => {
+  const handleToggleTheme = useCallback(() => {
     document.documentElement.classList.toggle("dark");
     setIsDark(document.documentElement.classList.contains("dark"));
-  };
+  }, []);
 
-  const handleSaveSimulation = () => {
+  const handleSaveSimulation = useCallback(() => {
     const activeInput = calculatorInputs[activeCalculatorId];
     const simulation: SavedSimulation = {
       id: `${Date.now()}`,
@@ -68,13 +80,13 @@ function App() {
     setSavedSimulations(next);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 1800);
-  };
+  }, [activeCalculatorId, calculatorInputs, computation, saveLabel]);
 
-  const handleExportPdf = () => {
+  const handleExportPdf = useCallback(() => {
     window.print();
-  };
+  }, []);
 
-  const handleExportJson = () => {
+  const handleExportJson = useCallback(() => {
     const payload = {
       exportedAt: new Date().toISOString(),
       calculator: getCalculatorById(activeCalculatorId),
@@ -88,40 +100,60 @@ function App() {
     anchor.download = `${activeCalculatorId}-${Date.now()}.json`;
     anchor.click();
     URL.revokeObjectURL(url);
-  };
+  }, [activeCalculatorId, calculatorInputs, computation]);
 
-  const handleCalculatorChange = (calculatorId: CalculatorId) => {
+  const handleCalculatorChange = useCallback((calculatorId: CalculatorId) => {
     setActiveCalculatorId(calculatorId);
-    setComputation(calculateForCalculator(calculatorId, calculatorInputs[calculatorId]));
-  };
-
-  const handleInputChange = (calculatorId: CalculatorId, input: CalculatorInputState) => {
-    setCalculatorInputs((prev) => ({
-      ...prev,
-      [calculatorId]: input,
+    setCalculatorRuntimeState((prev) => ({
+      calculatorInputs: prev.calculatorInputs,
+      computation: calculateForCalculator(calculatorId, prev.calculatorInputs[calculatorId]),
     }));
-  };
+  }, []);
 
-  const handleRestoreSimulation = (simulation: SavedSimulation) => {
+  const handleInputChange = useCallback(
+    (calculatorId: CalculatorId, input: CalculatorInputState) => {
+      setCalculatorRuntimeState((prev) => {
+        const nextInputs = {
+          ...prev.calculatorInputs,
+          [calculatorId]: input,
+        };
+        return {
+          calculatorInputs: nextInputs,
+          computation:
+            calculatorId === activeCalculatorId
+              ? calculateForCalculator(calculatorId, input)
+              : prev.computation,
+        };
+      });
+    },
+    [activeCalculatorId],
+  );
+
+  const handleRestoreSimulation = useCallback((simulation: SavedSimulation) => {
     setActiveCalculatorId(simulation.calculatorId);
-    setCalculatorInputs((prev) => ({
-      ...prev,
-      [simulation.calculatorId]: simulation.input,
+    setCalculatorRuntimeState((prev) => ({
+      calculatorInputs: {
+        ...prev.calculatorInputs,
+        [simulation.calculatorId]: simulation.input,
+      },
+      computation: simulation.result,
     }));
-    setComputation(simulation.result);
     setSaveLabel(simulation.name);
-  };
+  }, []);
 
-  const handleDeleteSimulation = (simulationId: string) => {
+  const handleDeleteSimulation = useCallback((simulationId: string) => {
     setSavedSimulations(deleteSimulation(simulationId));
-  };
+  }, []);
+
+  const handleCloseSidebar = useCallback(() => setIsSidebarOpen(false), []);
+  const handleOpenSidebar = useCallback(() => setIsSidebarOpen(true), []);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <div className="lg:flex">
         <Sidebar
           isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
+          onClose={handleCloseSidebar}
           onExportPdf={handleExportPdf}
           onSaveSimulation={handleSaveSimulation}
         />
@@ -130,7 +162,7 @@ function App() {
           <Header
             isDark={isDark}
             onToggleTheme={handleToggleTheme}
-            onOpenSidebar={() => setIsSidebarOpen(true)}
+            onOpenSidebar={handleOpenSidebar}
           />
 
           <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 md:px-8">
@@ -142,7 +174,17 @@ function App() {
                 <h2 className="text-2xl font-semibold">{esApp.vistaFinanciera}</h2>
               </div>
               <SummaryCards computation={computation} />
-              <IncomeDonutChart computation={computation} />
+              <Suspense
+                fallback={
+                  <Card className="h-full">
+                    <CardContent className="h-[280px] pt-6 text-sm text-slate-500 dark:text-slate-400">
+                      Cargando gráfico...
+                    </CardContent>
+                  </Card>
+                }
+              >
+                <IncomeDonutChart computation={computation} />
+              </Suspense>
             </section>
 
             <section>
@@ -151,7 +193,6 @@ function App() {
                 calculatorInputs={calculatorInputs}
                 onCalculatorChange={handleCalculatorChange}
                 onInputChange={handleInputChange}
-                onCalculationChange={setComputation}
               />
             </section>
 

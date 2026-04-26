@@ -1,6 +1,8 @@
+import { memo } from "react";
+
+const currentYear = new Date().getFullYear();
+
 function Footer() {
-  const date = new Date();
-  const currentYear = date.getFullYear();
 
   return (
     <footer className="mt-auto w-full py-3 text-center text-sm">
@@ -20,4 +22,6 @@ function Footer() {
   );
 }
 
-export { Footer };
+const MemoizedFooter = memo(Footer);
+
+export { MemoizedFooter as Footer };

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Check, FileDown, Save } from "lucide-react";
 import type { CalculationResult } from "../../helpers/calculators";
 import { formatCopCurrency, formatNumber } from "../../helpers";
@@ -95,4 +96,6 @@ function ResultsPanel({
   );
 }
 
-export { ResultsPanel };
+const MemoizedResultsPanel = memo(ResultsPanel);
+
+export { MemoizedResultsPanel as ResultsPanel };
