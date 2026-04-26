@@ -174,6 +174,15 @@ function App() {
                 </p>
               </div>
               <SummaryCards computation={computation} />
+              <section>
+                <h2 className="text-2xl font-semibold mb-5">{esApp.seccionCalculadora}</h2>
+                <CalculatorTabs
+                  activeCalculatorId={activeCalculatorId}
+                  calculatorInputs={calculatorInputs}
+                  onCalculatorChange={handleCalculatorChange}
+                  onInputChange={handleInputChange}
+                />
+              </section>
               <Suspense
                 fallback={
                   <Card className="h-full">
@@ -185,16 +194,6 @@ function App() {
               >
                 <LazyIncomeDonutChart computation={computation} />
               </Suspense>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold">{esApp.seccionCalculadora}</h2>
-              <CalculatorTabs
-                activeCalculatorId={activeCalculatorId}
-                calculatorInputs={calculatorInputs}
-                onCalculatorChange={handleCalculatorChange}
-                onInputChange={handleInputChange}
-              />
             </section>
 
             <section className="grid gap-6 xl:grid-cols-[1.35fr_1fr]">
@@ -233,7 +232,6 @@ function App() {
                       {formatCopCurrency(computation.socialSecurityAmount)}
                     </span>
                   </p>
-                  <p>{esApp.disclaimerContador}</p>
                 </CardContent>
               </Card>
             </section>

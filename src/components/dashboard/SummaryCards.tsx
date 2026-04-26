@@ -1,5 +1,5 @@
 import { memo, useMemo } from "react";
-import { BadgeDollarSign, Landmark, PiggyBank, ShieldCheck } from "lucide-react";
+import { AlertTriangle, BadgeDollarSign, Landmark, PiggyBank, ShieldCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { CalculationResult } from "@/domain/tax/calculators";
 import { app, resumen } from "@/i18n/es";
@@ -45,7 +45,16 @@ function SummaryCards({ computation }: SummaryCardsProps) {
   );
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 mb-10">
+      <Card className="sm:col-span-2 xl:col-span-4 border-amber-300 bg-amber-50 shadow-none dark:border-amber-500/50 dark:bg-amber-950/50">
+        <CardContent className="flex items-center gap-3 p-4 text-sm text-amber-950 dark:text-amber-100/95">
+          <AlertTriangle
+            className="h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400"
+            aria-hidden
+          />
+          <p>{app.disclaimerContador}</p>
+        </CardContent>
+      </Card>
       {cards.map((card) => (
         <Card key={card.title}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -59,11 +68,6 @@ function SummaryCards({ computation }: SummaryCardsProps) {
           </CardContent>
         </Card>
       ))}
-      <Card className="sm:col-span-2 xl:col-span-4">
-        <CardContent className="pt-4 text-sm text-slate-600 dark:text-slate-300">
-          {app.disclaimerContador}
-        </CardContent>
-      </Card>
     </div>
   );
 }
