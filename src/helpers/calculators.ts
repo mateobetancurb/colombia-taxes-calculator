@@ -443,6 +443,7 @@ export const calculatorDefinitions: CalculatorDefinition[] = [
       { id: "dependentsDeduction", label: "Deducción por dependientes", defaultValue: 0 },
     ],
     selectFields: [
+      // Kept for future business behavior; currently does not alter formula output.
       {
         id: "incomeType",
         label: "Tipo de ingreso",
@@ -476,6 +477,7 @@ export const calculatorDefinitions: CalculatorDefinition[] = [
     category: "advanced",
     numberFields: [{ id: "vehicleValue", label: "Valor comercial", defaultValue: 0 }],
     selectFields: [
+      // Kept for future business behavior; currently does not alter formula output.
       {
         id: "vehicleType",
         label: "Tipo",

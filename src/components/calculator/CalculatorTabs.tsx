@@ -1,8 +1,7 @@
-import { useEffect, useMemo } from "react";
+import { memo, useMemo } from "react";
 import {
-  calculateForCalculator,
   calculatorDefinitions,
-  type CalculationResult,
+  getCalculatorById,
   type CalculatorId,
   type CalculatorInputState,
 } from "../../helpers/calculators";
@@ -19,7 +18,6 @@ interface CalculatorTabsProps {
   calculatorInputs: Record<CalculatorId, CalculatorInputState>;
   onCalculatorChange: (calculatorId: CalculatorId) => void;
   onInputChange: (calculatorId: CalculatorId, input: CalculatorInputState) => void;
-  onCalculationChange: (computation: CalculationResult) => void;
 }
 
 function CalculatorTabs({
@@ -27,22 +25,9 @@ function CalculatorTabs({
   calculatorInputs,
   onCalculatorChange,
   onInputChange,
-  onCalculationChange,
 }: CalculatorTabsProps) {
-  const activeCalculator = useMemo(
-    () =>
-      calculatorDefinitions.find((item) => item.id === activeCalculatorId) ||
-      calculatorDefinitions[0],
-    [activeCalculatorId],
-  );
-
-  const computation = useMemo(() => {
-    return calculateForCalculator(activeCalculator.id, calculatorInputs[activeCalculator.id]);
-  }, [activeCalculator.id, calculatorInputs]);
-
-  useEffect(() => {
-    onCalculationChange(computation);
-  }, [computation, onCalculationChange]);
+  const activeCalculator = useMemo(() => getCalculatorById(activeCalculatorId), [activeCalculatorId]);
+  const inputState = calculatorInputs[activeCalculator.id];
 
   const updateNumberField = (fieldId: string, value: string) => {
     const nextValue = parseCopInput(value);
@@ -90,65 +75,58 @@ function CalculatorTabs({
             ))}
           </TabsList>
 
-          {calculatorDefinitions.map((calculator) => {
-            const inputState = calculatorInputs[calculator.id];
-            return (
-              <TabsContent key={calculator.id} value={calculator.id} className="space-y-4 pt-4">
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  {calculator.description}
-                </p>
-                <div className="grid gap-4 md:grid-cols-2">
-                  {calculator.numberFields.map((field) => (
-                    <div key={field.id} className="space-y-2">
-                      <Label htmlFor={`${calculator.id}-${field.id}`}>{field.label}</Label>
-                      <Input
-                        id={`${calculator.id}-${field.id}`}
-                        inputMode="numeric"
-                        placeholder="$ 0"
-                        value={formatCopInput(inputState.numbers[field.id] || 0)}
-                        onChange={(event) => updateNumberField(field.id, event.target.value)}
-                      />
-                      {field.description ? (
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
-                          {field.description}
-                        </p>
-                      ) : null}
-                    </div>
-                  ))}
+          <TabsContent value={activeCalculator.id} className="space-y-4 pt-4">
+            <p className="text-sm text-slate-500 dark:text-slate-400">{activeCalculator.description}</p>
+            <div className="grid gap-4 md:grid-cols-2">
+              {activeCalculator.numberFields.map((field) => (
+                <div key={field.id} className="space-y-2">
+                  <Label htmlFor={`${activeCalculator.id}-${field.id}`}>{field.label}</Label>
+                  <Input
+                    id={`${activeCalculator.id}-${field.id}`}
+                    inputMode="numeric"
+                    placeholder="$ 0"
+                    value={formatCopInput(inputState.numbers[field.id] || 0)}
+                    onChange={(event) => updateNumberField(field.id, event.target.value)}
+                  />
+                  {field.description ? (
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{field.description}</p>
+                  ) : null}
                 </div>
+              ))}
+            </div>
 
-                {calculator.selectFields?.length ? (
-                  <div className="grid gap-3 md:grid-cols-2">
-                    {calculator.selectFields.map((field) => (
-                      <div key={field.id} className="space-y-2">
-                        <Label>{field.label}</Label>
-                        <div className="flex flex-wrap gap-2">
-                          {field.options.map((option) => {
-                            const isSelected = inputState.selects[field.id] === option.value;
-                            return (
-                              <Button
-                                key={option.value}
-                                type="button"
-                                variant={isSelected ? "default" : "outline"}
-                                size="sm"
-                                onClick={() => updateSelectField(field.id, option.value)}
-                              >
-                                {option.label}
-                              </Button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    ))}
+            {activeCalculator.selectFields?.length ? (
+              <div className="grid gap-3 md:grid-cols-2">
+                {activeCalculator.selectFields.map((field) => (
+                  <div key={field.id} className="space-y-2">
+                    <Label>{field.label}</Label>
+                    <div className="flex flex-wrap gap-2">
+                      {field.options.map((option) => {
+                        const isSelected = inputState.selects[field.id] === option.value;
+                        return (
+                          <Button
+                            key={option.value}
+                            type="button"
+                            variant={isSelected ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => updateSelectField(field.id, option.value)}
+                          >
+                            {option.label}
+                          </Button>
+                        );
+                      })}
+                    </div>
                   </div>
-                ) : null}
-              </TabsContent>
-            );
-          })}
+                ))}
+              </div>
+            ) : null}
+          </TabsContent>
         </Tabs>
       </CardContent>
     </Card>
   );
 }
 
-export { CalculatorTabs };
+const MemoizedCalculatorTabs = memo(CalculatorTabs);
+
+export { MemoizedCalculatorTabs as CalculatorTabs };

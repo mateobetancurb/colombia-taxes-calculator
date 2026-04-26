@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import { BadgeDollarSign, Landmark, PiggyBank, ShieldCheck } from "lucide-react";
 import type { CalculationResult } from "../../helpers/calculators";
 import { formatCopCurrency } from "../../helpers";
@@ -9,28 +10,39 @@ interface SummaryCardsProps {
 }
 
 function SummaryCards({ computation }: SummaryCardsProps) {
-  const cards = [
-    {
-      title: resumen.baseReferencia,
-      value: computation.referenceAmount,
-      icon: BadgeDollarSign,
-    },
-    {
-      title: computation.primaryTaxLabel,
-      value: computation.primaryTaxAmount,
-      icon: Landmark,
-    },
-    {
-      title: computation.socialSecurityLabel,
-      value: computation.socialSecurityAmount,
-      icon: ShieldCheck,
-    },
-    {
-      title: computation.netLabel,
-      value: computation.netAmount,
-      icon: PiggyBank,
-    },
-  ];
+  const cards = useMemo(
+    () => [
+      {
+        title: resumen.baseReferencia,
+        value: computation.referenceAmount,
+        icon: BadgeDollarSign,
+      },
+      {
+        title: computation.primaryTaxLabel,
+        value: computation.primaryTaxAmount,
+        icon: Landmark,
+      },
+      {
+        title: computation.socialSecurityLabel,
+        value: computation.socialSecurityAmount,
+        icon: ShieldCheck,
+      },
+      {
+        title: computation.netLabel,
+        value: computation.netAmount,
+        icon: PiggyBank,
+      },
+    ],
+    [
+      computation.netAmount,
+      computation.netLabel,
+      computation.primaryTaxAmount,
+      computation.primaryTaxLabel,
+      computation.referenceAmount,
+      computation.socialSecurityAmount,
+      computation.socialSecurityLabel,
+    ],
+  );
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -56,4 +68,6 @@ function SummaryCards({ computation }: SummaryCardsProps) {
   );
 }
 
-export { SummaryCards };
+const MemoizedSummaryCards = memo(SummaryCards);
+
+export { MemoizedSummaryCards as SummaryCards };

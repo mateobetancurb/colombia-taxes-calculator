@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { BarChart3, Calculator, FileDown, Save } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "../../lib/utils";
@@ -77,4 +78,6 @@ function Sidebar({ isOpen, onClose, onExportPdf, onSaveSimulation }: SidebarProp
   );
 }
 
-export { Sidebar };
+const MemoizedSidebar = memo(Sidebar);
+
+export { MemoizedSidebar as Sidebar };

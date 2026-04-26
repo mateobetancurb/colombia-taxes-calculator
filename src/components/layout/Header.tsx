@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Menu, Moon, Sun } from "lucide-react";
 import { Button } from "../ui/button";
 import { UVT_2026, formatCopCurrency } from "../../helpers";
@@ -46,4 +47,6 @@ function Header({ isDark, onToggleTheme, onOpenSidebar }: HeaderProps) {
   );
 }
 
-export { Header };
+const MemoizedHeader = memo(Header);
+
+export { MemoizedHeader as Header };

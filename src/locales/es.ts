@@ -70,9 +70,11 @@ export const grafico = {
   seguridadSocial: "Seguridad social",
 } as const;
 
+const dateLabelFormatter = new Intl.DateTimeFormat("es-CO", {
+  dateStyle: "medium",
+  timeStyle: "short",
+});
+
 export function formatDateLabel(isoDate: string): string {
-  return new Intl.DateTimeFormat("es-CO", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(isoDate));
+  return dateLabelFormatter.format(new Date(isoDate));
 }
