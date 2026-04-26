@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
-import { Footer } from "./components/Footer";
+import { Footer } from "./components/layout/Footer";
 import { Header } from "./components/layout/Header";
 import { Sidebar } from "./components/layout/Sidebar";
 import { SummaryCards } from "./components/dashboard/SummaryCards";
