@@ -175,7 +175,7 @@ function App() {
               </div>
               <SummaryCards computation={computation} />
               <section>
-                <h2 className="text-2xl font-semibold">{esApp.seccionCalculadora}</h2>
+                <h2 className="text-2xl font-semibold mb-5">{esApp.seccionCalculadora}</h2>
                 <CalculatorTabs
                   activeCalculatorId={activeCalculatorId}
                   calculatorInputs={calculatorInputs}

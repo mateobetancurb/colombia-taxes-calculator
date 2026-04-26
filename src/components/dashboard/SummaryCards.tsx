@@ -45,7 +45,7 @@ function SummaryCards({ computation }: SummaryCardsProps) {
   );
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 mb-10">
       <Card className="sm:col-span-2 xl:col-span-4 border-amber-300 bg-amber-50 shadow-none dark:border-amber-500/50 dark:bg-amber-950/50">
         <CardContent className="flex items-center gap-3 p-4 text-sm text-amber-950 dark:text-amber-100/95">
           <AlertTriangle
